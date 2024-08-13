@@ -63,8 +63,8 @@ function PasswordInput() {
               number === "←" ? handleDelete() : handleKeypadClick(number)
             }
             style={{
-              width: "70px",
-              height: "70px",
+              width: "50px",
+              height: "50px",
               fontSize: "24px",
               margin: "0px",
               cursor: number !== "" ? "pointer" : "default",
