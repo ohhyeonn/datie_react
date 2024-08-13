@@ -1,8 +1,25 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // 페이지 전환을 위한 useNavigate 훅
 
 function PasswordInput() {
   const [password, setPassword] = useState(["", "", "", ""]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const navigate = useNavigate(); // useNavigate 훅을 사용하여 페이지 전환 처리
+
+  // 비밀번호가 변경될 때마다 검사
+  useEffect(() => {
+    if (currentIndex === 4) {
+      // 비밀번호가 모두 입력된 경우
+      const enteredPassword = password.join("");
+      if (enteredPassword === "1234") {
+        navigate("/pay/Payresult"); // 비밀번호가 맞으면 /success 페이지로 이동
+      } else {
+        // 비밀번호가 틀리면 초기화
+        setPassword(["", "", "", ""]);
+        setCurrentIndex(0);
+      }
+    }
+  }, [currentIndex, navigate, password]);
 
   const handleKeypadClick = (number) => {
     if (currentIndex < 4 && typeof number === "number") {
