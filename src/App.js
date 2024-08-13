@@ -4,11 +4,9 @@ import Paypassword from "./component/pay/Paypassword";
 function App() {
   return (
     <Routes>
-      <Route path="/pay/paypassword" element={<Paypassword />} />
+      <Route path="/pay/Paypassword" element={<Paypassword />} />
     </Routes>
   );
 }
 
 export default App;
-
-//gd
