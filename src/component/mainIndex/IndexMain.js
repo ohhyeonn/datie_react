@@ -223,6 +223,7 @@ function IndexMain() {
           }
         `}
       </style>
+    </div>
   );
 }
 
