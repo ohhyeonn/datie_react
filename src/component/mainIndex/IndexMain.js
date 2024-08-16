@@ -49,6 +49,7 @@ function IndexMain() {
           backgroundPosition: "center",
           width: "1024px",
           height: "1792px",
+          borderRadius: "8px",
           position: "relative",
         }}
       >
