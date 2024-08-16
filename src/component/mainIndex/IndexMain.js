@@ -224,7 +224,6 @@ function IndexMain() {
           }
         `}
       </style>
-    </div>
   );
 }
 
