@@ -2,15 +2,16 @@
 
 html,
 body {
-  margin: 0;
+  margin-bottom: 27px;
   font-family: "Gamja Flower", cursive;
   width: 100%;
   background-color: #f6f6f6;
   display: flex;
   justify-content: center;
+
 }
 body {
-  height: 100%;
+  min-height: 100vh;
 }
 #root {
   margin: 0 auto;
@@ -29,4 +30,10 @@ body {
   transform: translateX(-50%); /* 중앙 정렬 */
   text-align: center;
   width: 600px; /* 필요 시 width를 설정 */
+}
+
+.body {
+  margin-left: 10px;
+  margin-right: 10px;
+  margin-top: 10px;
 }

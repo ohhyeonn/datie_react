@@ -1,19 +1,16 @@
-import RealHeader from "./component/RealHeader"
-import Header from "./component/Header"
-import Footer from "./component/Footer"
+import DiaryDetail from './diary/pages/DiaryDetail';
+import DiaryHome from './diary/pages/DiaryHome';
+import { Routes, Route } from 'react-router-dom';
 
 function App() {
-  return (
-    <div>
-    <div className="App">
-      <RealHeader/>
-      <Header title={"서브 헤더"}/>
-    </div>
-    <div className="footer">
-      <Footer/> 
-    </div>
-    </div>
-  );
+    return (
+        <div className="App">
+            <Routes>
+                <Route path="/diary" element={<DiaryHome />} />
+                <Route path="/diary/detail" element={<DiaryDetail />} />
+            </Routes>
+        </div>
+    );
 }
 
 export default App;
