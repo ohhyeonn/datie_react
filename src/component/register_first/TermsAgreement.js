@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-function TermsAgreement() {
-  const [isAgreed, setIsAgreed] = useState(false);
-
+function TermsAgreement({ isAgreed, setIsAgreed }) {
   const handleCheckboxChange = () => {
     setIsAgreed(!isAgreed);
   };

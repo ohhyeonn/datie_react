@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Button as MuiButton } from "@mui/material"; // Material-UI Button 임포트
-import Headertest from "../component/RealHeader";
-import Footer from "../component/Footer";
-import Header from "../component/Header";
+
+import ResponsiveAppBar from "../RealHeader";
+import Footer from "../Footer";
+import Header from "../Header";
 import InitialInput from "./InitialInput";
 
 function CardInfoInput() {
@@ -72,7 +73,7 @@ function CardInfoInput() {
 
   return (
     <div>
-      <Headertest />
+      <ResponsiveAppBar />
       <Header title={"카드 정보입력"} />
       <CardInfoContainer>
         <MidContent>
