@@ -1,14 +1,22 @@
 import React from "react";
+import { useNavigate } from "react-router-dom"; // useNavigate 훅 임포트
 import styled from "styled-components";
-import Headertest from "../RealHeader";
+import ResponsiveAppBar from "../RealHeader";
 import Footer from "../Footer";
 import Header from "../Header";
 import { Button as MuiButton } from "@mui/material"; // Material-UI Button 임포트
 
 const CardApplicationComplete = () => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  // 홈으로 버튼 클릭 시 호출되는 함수
+  const handleHomeButtonClick = () => {
+    navigate("/card_info"); // /card_info 페이지로 이동
+  };
+
   return (
     <div>
-      <Headertest />
+      <ResponsiveAppBar />
       <Header title={"카드생성 완료"} />
 
       <WholePage className="application-complete">
@@ -30,7 +38,8 @@ const CardApplicationComplete = () => {
             width: "30%",
             fontFamily: '"Gamja Flower", cursive',
             fontSize: "20px",
-          }} // 미리보기 버튼 클릭 시 호출
+          }}
+          onClick={handleHomeButtonClick} // 클릭 시 handleHomeButtonClick 호출
         >
           홈으로
         </MuiButton>
@@ -70,20 +79,6 @@ const Description = styled.p`
   font-size: 18px;
   margin: 0 0 50px 0;
   align-items: center;
-`;
-
-const HomeButton = styled.button`
-  padding: 10px 20px;
-  margin-top: 200px;
-  font-size: 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #45a049;
-  }
 `;
 
 export default CardApplicationComplete;

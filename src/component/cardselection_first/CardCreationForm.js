@@ -1,16 +1,31 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import InputField from "./InputField_third";
-import { Button as MuiButton } from "@mui/material";
-import { TextField } from "@mui/material";
-import Headertest from "../component/RealHeader";
-import Footer from "../component/Footer";
-import Header from "../component/Header";
+import { Button as MuiButton, TextField } from "@mui/material";
+import ResponsiveAppBar from "../RealHeader";
+import Footer from "../Footer";
+import Header from "../Header";
+import { useNavigate } from "react-router-dom"; // useNavigate 사용
 
 const CardCreationForm = () => {
+  const [loverId, setLoverId] = useState("");
+  const [loverPw, setLoverPw] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate(); // useNavigate 훅 사용
+
+  const handleSubmit = () => {
+    const validId = "validId"; // 데이터베이스에 있는 ID
+    const validPw = "validPassword"; // 데이터베이스에 있는 비밀번호
+
+    if (loverId === validId && loverPw === validPw) {
+      navigate("/특정주소"); // 라우트에 설정한 주소로 이동
+    } else {
+      setErrorMessage("입력된 아이디, 비밀번호가 일치하지 않습니다.");
+    }
+  };
+
   return (
     <div>
-      <Headertest />
+      <ResponsiveAppBar />
       <Header title={"내 애인 조회"} />
       <FormContainer>
         <CenteredContainer>
@@ -24,35 +39,34 @@ const CardCreationForm = () => {
           id="lover-id"
           label="상대방 아이디"
           variant="outlined"
-          sx={{
-            mb: 2,
-          }}
+          value={loverId}
+          onChange={(e) => setLoverId(e.target.value)}
+          sx={{ mb: 2, width: "500px" }}
         />
-        {/* <InputField label="아이디" placeholder="상대방 아이디를 입력해주세요" /> */}
-        {/* <InputField
-        label="비밀번호"
-        placeholder="상대방 비밀번호를 입력해주세요"
-        type="password"
-      /> */}
 
         <TextField
           id="lover-pw"
           label="상대방 비밀번호"
+          type="password"
           variant="outlined"
-          sx={{
-            mb: 2,
-          }}
+          value={loverPw}
+          onChange={(e) => setLoverPw(e.target.value)}
+          sx={{ mb: 4, width: "500px" }}
         />
+
+        {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+
         <CenteredContainer>
           <MuiButton
             variant="contained"
+            onClick={handleSubmit}
             sx={{
               mt: 1,
               backgroundColor: "rgb(148, 160, 227)",
               "&:hover": {
-                backgroundColor: "rgb(120, 140, 200)", // 호버 시 색상 조정 (예: 약간 어두운 색)
+                backgroundColor: "rgb(120, 140, 200)",
               },
-              width: "100%",
+              width: "500px",
               height: "50px",
             }}
           >
@@ -68,7 +82,7 @@ const CardCreationForm = () => {
 };
 
 const FormContainer = styled.form`
-  aligh-items: center;
+  align-items: center;
   background-color: #fff;
   display: flex;
   flex-direction: column;
@@ -81,9 +95,9 @@ const FormContainer = styled.form`
 const CenteredContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center; /* 수평 중앙 정렬 */
-  justify-content: center; /* 수직 중앙 정렬 */
-  margin-bottom: 36px; /* 이미지와 버튼 사이의 여백 */
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 36px;
 `;
 
 const CardImage = styled.img`
@@ -92,6 +106,11 @@ const CardImage = styled.img`
   object-position: center;
   width: 100%;
   max-width: 307px;
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  margin-bottom: 20px;
 `;
 
 export default CardCreationForm;
