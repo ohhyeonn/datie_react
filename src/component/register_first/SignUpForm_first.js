@@ -31,7 +31,7 @@ function SignUpComponent() {
   return (
     <div>
       <ResponsiveAppBar />
-      <Header title={"동동초이"} />
+      <Header title={"실명확인"} />
       <StyledContainer>
         <SignUpHeader>
           {/* <Comtext>①약관동의 / 실명확인</Comtext> */}

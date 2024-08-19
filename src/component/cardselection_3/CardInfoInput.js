@@ -141,7 +141,7 @@ function CardInfoInput() {
               width: "100px",
               fontFamily: '"Gamja Flower", cursive',
             }}
-            onClick={handleSave} // 선택하기 버튼 클릭 시 호출
+            onClick={() => handleSave(initial)} // handleSave 호출 시 이니셜 값 전달
           >
             선택하기
           </MuiButton>
