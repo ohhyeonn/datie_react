@@ -7,7 +7,6 @@ import CardCreationForm from "./component/cardselection_first/CardCreationForm";
 import ProfileComparison from "./component/cardselection_second/ProfileComparison";
 import CardInfoInput from "./component/cardselection_3/CardInfoInput";
 import LoginPage from "./component/Login/LoginPage";
-import { Routes, Route } from "react-router-dom";
 import Paypassword from "./component/pay/Paypassword";
 import IndexMain from "./component/mainIndex/IndexMain";
 import Payresult from "./component/pay/Payresult";
