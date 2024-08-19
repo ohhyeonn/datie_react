@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-function IdentityVerification() {
+function IdentityVerification({ name, setName, idNumber }) {
   return (
     <VerificationSection>
       <h2 className="section-title">실명확인(주민등록번호 / 외국인등록번호)</h2>
       <VerificationForm>
         <div className="form-row">
           <label htmlFor="name">이름</label>
-          <input type="text" id="name" className="input-field" />
+          <input
+            type="text"
+            id="name"
+            className="input-field"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
         </div>
         <div className="form-row">
           <label htmlFor="id-number">
@@ -21,18 +27,18 @@ function IdentityVerification() {
               type="text"
               id="id-number-1"
               className="input-field"
-              pattern="\d{6}" // 6자리 숫자 패턴
-              maxLength="6" // 최대 6자리
+              pattern="\d{6}"
+              maxLength="6"
               placeholder=""
               required
             />
             <span className="separator">-</span>
             <input
-              type="password" // 입력 필드 타입을 password로 변경
+              type="password"
               id="id-number-2"
               className="input-field"
-              pattern="\d{7}" // 7자리 숫자 패턴
-              maxLength="7" // 최대 7자리
+              pattern="\d{7}"
+              maxLength="7"
               placeholder=""
               required
             />
