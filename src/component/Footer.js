@@ -5,7 +5,6 @@ import BottomNavigationAction from "@mui/material/BottomNavigationAction";
 import RestoreIcon from "@mui/icons-material/Restore";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-
 const StyledBottomNavigation = styled(BottomNavigation)`
   margin-top: 40px; /* margin-top 추가 */
 `;

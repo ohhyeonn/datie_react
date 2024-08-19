@@ -1,0 +1,17 @@
+.admin {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.adminHeader {
+  align-items: flex-start;
+}
+
+.admin_container {
+  background-color: #fff;
+}
+
+.Footer {
+  margin-top: auto; /* Footer를 하단에 고정 */
+}
