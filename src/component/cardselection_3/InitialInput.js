@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 function InitialInput({ onSave }) {
-  // onSave prop 추가
   const [initial, setInitial] = useState("");
 
   const handleInputChange = (event) => {

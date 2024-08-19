@@ -1,15 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { TextField } from "@mui/material";
 import { Button as MuiButton } from "@mui/material";
-// import { useHistory } from "react-router-dom"; // React Router 사용시
+import { useNavigate } from "react-router-dom"; // React Router 사용
 
-function LoginForm() {
-  //   const history = useHistory(); // React Router 사용시
+const LoginForm = () => {
+  const navigate = useNavigate(); // useNavigate 훅 사용
+  const [userId, setUserId] = useState(""); // 아이디 상태 관리
+  const [password, setPassword] = useState(""); // 비밀번호 상태 관리
 
-  //   const handleSignUpClick = () => {
-  //     history.push("/signup"); // 회원가입 페이지로 이동
-  //   };
+  const handlesignupclick = () => {
+    navigate("/verify"); // /verify 페이지로 이동
+  };
+
+  const handleLoginClick = () => {
+    // 여기서 데이터베이스에 접근하는 로직을 구현해야 합니다.
+    const dummyDatabase = {
+      testUser: "testPassword", // 더미 데이터베이스 예시
+    };
+
+    if (!dummyDatabase[userId]) {
+      alert("데이티 회원이 아닙니다."); // 아이디가 없는 경우
+    } else if (dummyDatabase[userId] !== password) {
+      alert("비밀번호가 틀렸습니다."); // 비밀번호가 다른 경우
+    } else {
+      navigate("/main"); // 로그인 성공 시 /main으로 이동
+    }
+  };
 
   return (
     <section className="login-form-container">
@@ -23,6 +40,8 @@ function LoginForm() {
             id="id"
             label="아이디"
             variant="outlined"
+            value={userId}
+            onChange={(e) => setUserId(e.target.value)} // 아이디 입력 처리
             sx={{
               mb: 2,
               width: "80%",
@@ -33,7 +52,10 @@ function LoginForm() {
           <TextField
             id="pw"
             label="비밀번호"
+            type="password" // 비밀번호 입력 필드를 *로 표시
             variant="outlined"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // 비밀번호 입력 처리
             sx={{
               mb: 2,
               width: "80%",
@@ -47,6 +69,7 @@ function LoginForm() {
         </div>
         <MuiButton
           variant="contained"
+          onClick={handleLoginClick} // 로그인 클릭 시 처리
           sx={{
             mt: 2,
             backgroundColor: "rgb(148, 160, 227)",
@@ -63,14 +86,11 @@ function LoginForm() {
         </MuiButton>
 
         {/* 회원가입 텍스트 추가 */}
-        <SignUpText>
-          {/* <SignUpText onClick={handleSignUpClick}> */}
-          회원가입
-        </SignUpText>
+        <SignUpText onClick={handlesignupclick}>회원가입</SignUpText>
       </form>
     </section>
   );
-}
+};
 
 const StyledLoginForm = styled(LoginForm)`
   text-align: center;
