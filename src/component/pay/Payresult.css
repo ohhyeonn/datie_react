@@ -1,0 +1,15 @@
+/* SweetAlert2 팝업 크기 조절 */
+.swal2-popup {
+  width: 300px !important; /* 원하는 너비로 조정 */
+  height: auto; /* 높이는 자동 조절 */
+  max-width: 100%; /* 화면 너비를 초과하지 않도록 설정 */
+}
+
+.swal2-title,
+.swal2-content {
+  font-size: 16px; /* 글자 크기 조절 */
+}
+
+.swal2-button {
+  font-size: 14px; /* 버튼 글자 크기 조절 */
+}
