@@ -3,14 +3,14 @@ import styled from "styled-components";
 import InputField from "./InputField_third";
 import { Button as MuiButton } from "@mui/material";
 import { TextField } from "@mui/material";
-import Headertest from "../component/RealHeader";
-import Footer from "../component/Footer";
-import Header from "../component/Header";
+import ResponsiveAppBar from "../RealHeader";
+import Footer from "../Footer";
+import Header from "../Header";
 
 const CardCreationForm = () => {
   return (
     <div>
-      <Headertest />
+      <ResponsiveAppBar />
       <Header title={"내 애인 조회"} />
       <FormContainer>
         <CenteredContainer>

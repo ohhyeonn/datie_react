@@ -1,14 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import LoginForm from "./LoginForm";
-import Headertest from "../component/RealHeader";
-import Footer from "../component/Footer";
-import Header from "../component/Header";
+import ResponsiveAppBar from "../RealHeader";
+import Footer from "../Footer";
+import Header from "../Header";
+import { Height } from "@mui/icons-material";
+import { height } from "@mui/system";
 
 function LoginPage() {
   return (
     <div>
-      <Headertest />
+      <ResponsiveAppBar />
       <Header title={"로그인"} />
       <StyledLoginPage>
         <LoginForm />

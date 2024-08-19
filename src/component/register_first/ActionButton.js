@@ -2,19 +2,20 @@ import React from "react";
 import styled from "styled-components";
 import { Button as MuiButton } from "@mui/material";
 
-function ActionButtons() {
+function ActionButtons({ handleNext }) {
   return (
     <ButtonContainer>
       <MuiButton
         variant="contained"
+        onClick={handleNext} // 클릭 시 핸들러 호출
         sx={{
           mt: 1,
           backgroundColor: "rgb(148, 160, 227)",
           "&:hover": {
-            backgroundColor: "rgb(120, 140, 200)", // 호버 시 색상 조정 (예: 약간 어두운 색)
+            backgroundColor: "rgb(120, 140, 200)",
           },
-          width: "300px", // 동일한 너비 설정
-          fontFamily: '"Gamja Flower", cursive', // 폰트 변경
+          width: "300px",
+          fontFamily: '"Gamja Flower", cursive',
         }}
       >
         다음으로
@@ -26,10 +27,10 @@ function ActionButtons() {
           mt: 1,
           backgroundColor: "grey",
           "&:hover": {
-            backgroundColor: "rgb(169, 169, 169)", // 호버 시 색상 조정 (예: 약간 어두운 색)
+            backgroundColor: "rgb(169, 169, 169)",
           },
-          width: "300px", // 동일한 너비 설정
-          fontFamily: '"Gamja Flower", cursive', // 폰트 변경
+          width: "300px",
+          fontFamily: '"Gamja Flower", cursive',
         }}
       >
         취소

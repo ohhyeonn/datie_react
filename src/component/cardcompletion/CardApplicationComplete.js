@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import Headertest from "../RealHeader";
+import ResponsiveAppBar from "../RealHeader";
 import Footer from "../Footer";
 import Header from "../Header";
 import { Button as MuiButton } from "@mui/material"; // Material-UI Button 임포트
@@ -8,7 +8,7 @@ import { Button as MuiButton } from "@mui/material"; // Material-UI Button 임�
 const CardApplicationComplete = () => {
   return (
     <div>
-      <Headertest />
+      <ResponsiveAppBar />
       <Header title={"카드생성 완료"} />
 
       <WholePage className="application-complete">
