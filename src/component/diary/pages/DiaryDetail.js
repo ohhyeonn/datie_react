@@ -43,12 +43,12 @@ function DiaryDetail() {
         },
     ]);
 
-    const geocoder = new kakao.maps.services.Geocoder();
+    const geocoder = new window.kakao.maps.services.Geocoder();
     geocoder.addressSearch('변환하고싶은주소', function (result, status) {
         let x = null;
         let y = null;
         // 주소가 정상적으로 좌표로 변환되면
-        if (status === kakao.maps.services.Status.OK) {
+        if (status === window.kakao.maps.services.Status.OK) {
             x = result[0].x;
             y = result[0].y;
         }
