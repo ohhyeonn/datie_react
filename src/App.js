@@ -13,12 +13,12 @@ import IndexMain from './component/mainIndex/IndexMain';
 import Payresult from './component/pay/Payresult';
 import AdminMember from './component/admin/AdminMember';
 import AdminStatistics from './component/admin/AdminStatistics';
-import CardPasswordChange from './component/profile/CardPasswordChange'; // 경로 확인 후 수정
-import CardLostReport from './component/profile/CardLostReport'; // 새로 추가된 컴포넌트 경로
-import CardLostReportCancellation from './component/profile/CardLostReportCancellation'; // 새로 추가된 컴포넌트 경로
-import CardCancellation from './component/profile/CardCancellation'; // 새로 추가된 컴포넌트 경로
-import EditProfile from './component/profile/EditProfile'; // 경로 확인 후 수정
-import ViewProfile from './component/profile/ViewProfile'; // 경로 확인 후 수정
+import CardPasswordChange from './component/profile/CardPasswordChange';
+import CardLostReport from './component/profile/CardLostReport'; 
+import CardLostReportCancellation from './component/profile/CardLostReportCancellation'; 
+import CardCancellation from './component/profile/CardCancellation'; 
+import EditProfile from './component/profile/EditProfile'; 
+import ViewProfile from './component/profile/ViewProfile'; 
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
 
