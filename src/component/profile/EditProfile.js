@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import Header from './Header';
-import Footer from './Footer';
-import { TextField, Button as MuiButton, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom'; // 페이지 이동을 위한 useNavigate 훅
+import Header from '../Header'; 
+import Footer from '../Footer';
+import { TextField, Button as MuiButton, Box, MenuItem, Typography } from '@mui/material';
 import './EditProfile.css';
-import './index.css';
+import '../../index.css';
 
 const EditProfile = () => {
     const [name, setName] = useState('John Doe');
@@ -12,13 +13,43 @@ const EditProfile = () => {
     const [detailedAddress, setDetailedAddress] = useState('Apartment 4B');
     const [gender, setGender] = useState('Male');
     const [age, setAge] = useState(30);
+    const [bankName, setBankName] = useState('KB국민은행');
+    const [accountNumber, setAccountNumber] = useState('123-456-7890');
+    const [verificationCode, setVerificationCode] = useState('');
+    const [isVerificationRequested, setIsVerificationRequested] = useState(false);
+    const [timer, setTimer] = useState(180); // 3분 = 180초
+
+    const navigate = useNavigate(); // useNavigate 훅 초기화
+
+    // 인증 요청 버튼을 누를 때 실행되는 함수
+    const handleVerificationRequest = () => {
+        setIsVerificationRequested(true);
+        setVerificationCode('');
+        setTimer(180); // 3분 타이머 시작
+
+        // 타이머 감소 로직
+        const countdown = setInterval(() => {
+            setTimer((prevTimer) => {
+                if (prevTimer <= 1) {
+                    clearInterval(countdown);
+                    return 0;
+                }
+                return prevTimer - 1;
+            });
+        }, 1000);
+    };
 
     const handleSave = () => {
-        console.log('저장된 정보:', { name, email, address, detailedAddress, gender, age});
+        console.log('저장된 정보:', { name, email, address, detailedAddress, gender, age, bankName, accountNumber, verificationCode });
+        
+        // 수정 완료 알림 팝업
+        alert('수정완료 되었습니다.');
+
+        // 이메일을 URL 파라미터로 포함시켜 view-profile 페이지로 이동
+        navigate(`/view-profile/${email}`);
     };
 
     const handleAddressSearch = () => {
-        // 주소 검색 로직을 여기에 추가합니다.
         console.log('주소 찾기 클릭됨');
     };
 
@@ -44,7 +75,6 @@ const EditProfile = () => {
                     sx={{ mt: 2, width: '100%' }}
                 />
 
-                {/* 주소 입력 필드와 주소 찾기 버튼을 동일한 행에 배치 */}
                 <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
                     <TextField
                         id="address"
@@ -58,10 +88,10 @@ const EditProfile = () => {
                         variant="contained"
                         sx={{
                             ml: 2,
-                            backgroundColor: "rgb(148, 160, 227)", // 버튼 배경 색상
-                            color: "white", // 버튼 글씨 색상
+                            backgroundColor: "rgb(148, 160, 227)",
+                            color: "white",
                             "&:hover": {
-                                backgroundColor: "rgb(120, 140, 200)", // 버튼 호버 시 배경 색상
+                                backgroundColor: "rgb(120, 140, 200)",
                             },
                             width: "125px"
                         }}
@@ -88,9 +118,9 @@ const EditProfile = () => {
                     select
                     sx={{ mt: 2, width: '100%' }}
                 >
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                    <MenuItem value="Male">Male</MenuItem>
+                    <MenuItem value="Female">Female</MenuItem>
+                    <MenuItem value="Other">Other</MenuItem>
                 </TextField>
                 <TextField
                     id="age"
@@ -101,21 +131,85 @@ const EditProfile = () => {
                     type="number"
                     sx={{ mt: 2, width: '100%' }}
                 />
+
+                <TextField
+                    id="bankName"
+                    label="은행 이름"
+                    variant="standard"
+                    value={bankName}
+                    onChange={(e) => setBankName(e.target.value)}
+                    select
+                    sx={{ mt: 2, width: '100%' }}
+                >
+                    <MenuItem value="KB국민은행">KB국민은행</MenuItem>
+                    <MenuItem value="신한은행">신한은행</MenuItem>
+                    <MenuItem value="우리은행">우리은행</MenuItem>
+                    <MenuItem value="하나은행">하나은행</MenuItem>
+                    <MenuItem value="IBK기업은행">IBK기업은행</MenuItem>
+                    <MenuItem value="NH농협은행">NH농협은행</MenuItem>
+                    <MenuItem value="카카오뱅크">카카오뱅크</MenuItem>
+                    <MenuItem value="케이뱅크">케이뱅크</MenuItem>
+                </TextField>
+
+                {/* 계좌 번호 필드와 인증 요청 버튼 */}
+                <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                    <TextField
+                        id="accountNumber"
+                        label="계좌 번호"
+                        variant="standard"
+                        value={accountNumber}
+                        onChange={(e) => setAccountNumber(e.target.value)}
+                        sx={{ width: '80%' }}
+                    />
+                    <MuiButton
+                        variant="contained"
+                        sx={{
+                            ml: 2,
+                            backgroundColor: "rgb(148, 160, 227)",
+                            color: "white",
+                            "&:hover": {
+                                backgroundColor: "rgb(120, 140, 200)",
+                            },
+                            width: "150px"
+                        }}
+                        onClick={handleVerificationRequest}
+                    >
+                        인증 요청
+                    </MuiButton>
+                </Box>
+
+                {/* 인증번호 입력 필드 (인증 요청 후 나타남) */}
+                {isVerificationRequested && (
+                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 2 }}>
+                        <TextField
+                            id="verificationCode"
+                            label="인증번호 입력"
+                            variant="standard"
+                            value={verificationCode}
+                            onChange={(e) => setVerificationCode(e.target.value)}
+                            sx={{ width: '70%' }}
+                        />
+                        <Typography sx={{ ml: 2, color: 'red' }}>
+                            {`${Math.floor(timer / 60)}:${String(timer % 60).padStart(2, '0')}`}
+                        </Typography>
+                    </Box>
+                )}
+
                 <MuiButton
                     variant="contained"
                     sx={{
                         mt: 3,
                         backgroundColor: "rgb(148, 160, 227)",
-                        color: "white", // 추가된 버튼 글씨 색상
+                        color: "white",
                         "&:hover": {
                             backgroundColor: "rgb(120, 140, 200)",
                         },
                         width: "150px",
-                        alignSelf: "center", // 버튼을 중앙으로 정렬
+                        alignSelf: "center",
                     }}
                     onClick={handleSave}
                 >
-                  수정
+                    수정
                 </MuiButton>
             </div>
             <Footer />
