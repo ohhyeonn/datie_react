@@ -5,19 +5,20 @@ import { TextField as MuiTextField, Button as MuiButton } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2'; // Swal import
 import backgroundImage from '../../assets/datie_highfive2.png';
-import bonusImage from '../../assets/bonus.gif';
 
 function PayInfo() {
     const navigate = useNavigate();
     const location = useLocation();
+    const [companyno, setCompanyno] = useState(0);
     const [companyName, setCompanyName] = useState('');
     const [amount, setAmount] = useState(0);
-    const [perAmount, setPerAmount] = useState(0);
+    const [peramount, setPerAmount] = useState(0);
     const [bonus, setBonus] = useState(0);
 
     useEffect(() => {
         const params = new URLSearchParams(location.search);
         const companynoFromUrl = parseInt(params.get('companyno'), 10) || 0;
+        setCompanyno(companynoFromUrl);
         const amountFromUrl = parseInt(params.get('amount'), 10) || 0;
 
         // 회사 이름 가져오기
@@ -77,11 +78,26 @@ function PayInfo() {
 
     const handlePayment = async () => {
         const loggedIn = await checkLoginStatus();
-        if (loggedIn) {
-            navigate('/pay/Paypassword');
-        } else {
-            navigate('/login');
-        }
+        navigate('/pay/Paypassword', {
+            state: {
+                companyno,
+                amount,
+                peramount,
+                bonus,
+            },
+        });
+        // if (loggedIn) {
+        //     navigate('/pay/Paypassword', {
+        //         state: {
+        //             companyName,
+        //             amount,
+        //             peramount,
+        //             bonus,
+        //         },
+        //     });
+        // } else {
+        //     navigate('/login');
+        // }
     };
 
     // 숫자에 쉼표를 붙이는 함수
@@ -126,14 +142,14 @@ function PayInfo() {
                         <StyledTextField
                             id="peramount1"
                             variant="outlined"
-                            value={`${formatNumberWithCommas(perAmount)}원`}
+                            value={`${formatNumberWithCommas(peramount)}원`}
                             InputProps={{ readOnly: true }}
                             customBgColor="#C3FBFF" // 첫 번째 박스 색상
                         />
                         <StyledTextField
                             id="peramount2"
                             variant="outlined"
-                            value={`${formatNumberWithCommas(perAmount)}원`}
+                            value={`${formatNumberWithCommas(peramount)}원`}
                             InputProps={{ readOnly: true }}
                             customBgColor="#FFCEF6" // 두 번째 박스 색상
                         />
