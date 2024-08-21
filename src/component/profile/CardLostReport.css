@@ -1,0 +1,76 @@
+/* CardLostReport 컴포넌트의 기본 스타일 */
+
+/* 전체 컨테이너 스타일 */
+.CardLostReport {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* 컨텐츠 스타일 */
+.content {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 카드 분실 신고 컨테이너 스타일 */
+.report_container {
+    background-color: #f9f9f9;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* 타이포그래피(텍스트) 스타일 */
+h2 {
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 20px;
+}
+
+.MuiTypography-root {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* 버튼 스타일 */
+.MuiButton-contained {
+    font-size: 1rem;
+    padding: 10px 20px;
+    text-transform: none;
+}
+
+/* 성공 메시지 스타일 */
+.MuiTypography-root[style*="green"] {
+    color: green;
+    font-weight: bold;
+}
+
+/* 에러 메시지 스타일 */
+.MuiTypography-root[style*="red"] {
+    color: red;
+    font-weight: bold;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+    .report_container {
+        width: 90%;
+        padding: 20px;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .MuiButton-contained {
+        width: 100%;
+    }
+}
