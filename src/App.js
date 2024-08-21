@@ -14,11 +14,11 @@ import Payresult from './component/pay/Payresult';
 import AdminMember from './component/admin/AdminMember';
 import AdminStatistics from './component/admin/AdminStatistics';
 import CardPasswordChange from './component/profile/CardPasswordChange';
-import CardLostReport from './component/profile/CardLostReport'; 
-import CardLostReportCancellation from './component/profile/CardLostReportCancellation'; 
-import CardCancellation from './component/profile/CardCancellation'; 
-import EditProfile from './component/profile/EditProfile'; 
-import ViewProfile from './component/profile/ViewProfile'; 
+import CardLostReport from './component/profile/CardLostReport';
+import CardLostReportCancellation from './component/profile/CardLostReportCancellation';
+import CardCancellation from './component/profile/CardCancellation';
+import EditProfile from './component/profile/EditProfile';
+import ViewProfile from './component/profile/ViewProfile';
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
 
@@ -42,13 +42,19 @@ function App() {
             <Route path="/admin/member" element={<AdminMember />} />
             <Route path="/admin" element={<AdminStatistics />} />
             <Route path="/card-lost-report" element={<CardLostReport />} />
-            <Route path="/card-lost-report-cancellation" element={<CardLostReportCancellation />} />
+            <Route
+                path="/card-lost-report-cancellation"
+                element={<CardLostReportCancellation />}
+            />
             <Route path="/card-cancellation" element={<CardCancellation />} />
-            <Route path="/change-cardpassword" element={<CardPasswordChange />} />
+            <Route
+                path="/change-cardpassword"
+                element={<CardPasswordChange />}
+            />
             <Route path="/edit-profile/:email" element={<EditProfile />} />
             <Route path="/view-profile/:email" element={<ViewProfile />} />
             <Route path="/diary" element={<DiaryHome />} />
-            <Route path="/diary/detail" element={<DiaryDetail />} />
+            <Route path="/diary/detail/:date" element={<DiaryDetail />} />
             <Route path="/" element={<LoginPage />} />
         </Routes>
     );

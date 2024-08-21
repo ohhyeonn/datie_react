@@ -27,8 +27,8 @@ const DogInfo = () => {
     };
 
     const handleDateClick = (date) => {
-        // 변경
-        navigate(`detail/`); //${moment(date).format('YYYY-MM-DD')}
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        navigate(`/diary/detail/${formattedDate}`);
     };
 
     return (

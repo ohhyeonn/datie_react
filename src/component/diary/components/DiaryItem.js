@@ -1,14 +1,23 @@
 import './DiaryItem.css';
-import { useNavigate } from 'react-router-dom';
 import Button from './Button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Rating } from '@mui/material';
 import EditButton from './EditButton';
 import Editor from './Editor';
+import { Link, useNavigate } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
+import axios from 'axios';
 
-const DiaryItem = ({ id, placeName, rate, review, images }) => {
+const DiaryItem = ({
+    diaryNo,
+    companyName,
+    rate,
+    review,
+    uploadOrg,
+    uploadReal,
+}) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
 
@@ -17,9 +26,7 @@ const DiaryItem = ({ id, placeName, rate, review, images }) => {
 
     return (
         <div className="DiaryItem">
-            <div className="img_section">
-                {images.length > 0 && <img src={images[0]} alt="Diary Item" />}
-            </div>
+            <div className="img_section"></div>
             <div className="info_section">
                 <div>
                     <Rating
@@ -29,7 +36,7 @@ const DiaryItem = ({ id, placeName, rate, review, images }) => {
                         readOnly={true}
                     />
                 </div>
-                <div className="date_wrapper">{placeName}</div>
+                <div className="date_wrapper">{companyName}</div>
 
                 <div
                     className="content_wrapper"
@@ -63,11 +70,11 @@ const DiaryItem = ({ id, placeName, rate, review, images }) => {
                     }}
                 >
                     <Editor
-                        id={id}
-                        placeName={placeName}
+                        diaryNo={diaryNo}
+                        companyName={companyName}
                         rate={rate}
                         review={review}
-                        images={images}
+                        uploadOrg={uploadOrg}
                         onSubmit={handleClose} // 예시로 handleClose를 사용
                     />
                 </Box>

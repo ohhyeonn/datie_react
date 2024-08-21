@@ -11,11 +11,12 @@ const DiaryList = ({ data }) => {
             <div className="list_wrapper">
                 {data.map((item) => (
                     <DiaryItem
-                        id={item.id}
-                        placeName={item.placeName}
+                        diaryNo={item.diaryNo}
+                        companyName={item.companyName}
                         rate={item.rate}
                         review={item.review}
-                        images={item.images}
+                        uploadOrg={item.uploadOrg}
+                        uploadReal={item.uploadReal}
                     />
                 ))}
             </div>
