@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DiaryItem from './DiaryItem';
 
-const DiaryList = ({ data }) => {
+const DiaryList = ({ data, date }) => {
     return (
         <div className="DiaryList">
-            <div className="menu_wrapper">2020-08-16 (금)</div>
+            <div className="menu_wrapper">{date.format('YYYY년 M월 D일')}</div>
             <div className="list_wrapper">
                 {data.map((item) => (
                     <DiaryItem

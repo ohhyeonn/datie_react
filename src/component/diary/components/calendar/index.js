@@ -1,20 +1,44 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 변경
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
     StyledCalendarWrapper,
     StyledCalendar,
-    StyledDate,
     StyledToday,
-    StyledDot,
+    StyledHeart, // 새로 생성한 StyledHeart 임포트
 } from './styles';
 import moment from 'moment';
 
 const DogInfo = () => {
-    const navigate = useNavigate(); // 변경
+    const navigate = useNavigate();
     const today = new Date();
     const [date, setDate] = useState(today);
     const [activeStartDate, setActiveStartDate] = useState(today);
-    const attendDay = ['2024-08-03', '2024-08-13']; // Example attendance dates
+    const [attendDay, setAttendDay] = useState([]); // State to store the attendance dates
+
+    useEffect(() => {
+        // Fetch attendance dates from the API
+        const fetchAttendanceDates = async () => {
+            try {
+                const response = await axios.get(
+                    'http://localhost:8090/api/diary/confirmdate',
+                    {
+                        params: {
+                            userno: 62, // Replace '62' with the actual userno if needed
+                        },
+                    },
+                );
+                console.log('Fetched Dates:', response.data);
+                setAttendDay(
+                    response.data.map((ts) => moment(ts).format('YYYY-MM-DD')),
+                ); // Store the fetched dates in the attendDay state
+            } catch (error) {
+                console.error('Error fetching attendance dates:', error);
+            }
+        };
+
+        fetchAttendanceDates();
+    }, []);
 
     const handleDateChange = (newDate) => {
         setDate(newDate);
@@ -28,7 +52,10 @@ const DogInfo = () => {
 
     const handleDateClick = (date) => {
         const formattedDate = moment(date).format('YYYY-MM-DD');
-        navigate(`/diary/detail/${formattedDate}`);
+        if (attendDay.includes(formattedDate)) {
+            // 클릭 가능한 날짜인지 확인
+            navigate(`/diary/detail/${formattedDate}`);
+        }
     };
 
     return (
@@ -53,22 +80,17 @@ const DogInfo = () => {
                 }
                 tileContent={({ date, view }) => {
                     let html = [];
+                    const formattedDate = moment(date).format('YYYY-MM-DD');
                     if (
                         view === 'month' &&
                         date.getMonth() === today.getMonth() &&
                         date.getDate() === today.getDate()
                     ) {
-                        html.push(<StyledToday key="today">오늘</StyledToday>);
+                        html.push(<StyledToday key="today"></StyledToday>);
                     }
-                    if (
-                        attendDay.find(
-                            (x) => x === moment(date).format('YYYY-MM-DD'),
-                        )
-                    ) {
+                    if (attendDay.includes(formattedDate)) {
                         html.push(
-                            <StyledDot
-                                key={moment(date).format('YYYY-MM-DD')}
-                            />,
+                            <StyledHeart key={formattedDate}>♡</StyledHeart>, // 하트를 표시
                         );
                     }
                     return <>{html}</>;
