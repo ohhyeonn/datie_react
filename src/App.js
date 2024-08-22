@@ -22,7 +22,6 @@ import EditProfile from './component/profile/EditProfile';
 import ViewProfile from './component/profile/ViewProfile';
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
-import Payresult from './component/pay/Payresult';
 
 function App() {
     return (
