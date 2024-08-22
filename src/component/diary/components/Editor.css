@@ -1,18 +1,15 @@
 .Editor {
-    
 }
 
 .Editor .editor_section {
     margin-bottom: 40px;
     text-align: center;
-    
-    
 }
 .Editor .editor_section_head {
     margin-bottom: 40px;
     text-align: center;
-    align-items: center; 
-    border-radius: 5px; 
+    align-items: center;
+    border-radius: 5px;
     height: 5vh;
 }
 .Editor h4 {
@@ -37,15 +34,82 @@ textarea {
     min-height: 200px;
     box-sizing: border-box;
     resize: vertical;
-    font-family: "Gamja Flower", cursive;
+    font-family: 'Gamja Flower', cursive;
 }
 .Editor .bottom_section {
     display: flex;
     justify-content: right;
-    
 }
 .Editor .emotion_list_wrapper {
     display: flex;
     justify-content: space-around;
     gap: 2%;
+}
+.editor_section {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input_wrapper {
+    width: 100%;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-family: 'Gamja Flower', sans-serif;
+    font-size: 16px;
+}
+
+.image_preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.preview_image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+.upload_button {
+    font-family: 'Gamja Flower', sans-serif;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px 10px; /* Adjust padding for smaller size */
+    font-size: 14px; /* Smaller font size */
+    cursor: pointer;
+    margin-bottom: 10px;
+    display: inline-block;
+    text-align: left; /* Align text to the left */
+    width: auto; /* Adjust width to fit content */
+}
+
+.image_container {
+    position: relative;
+    display: inline-block;
+    margin: 5px;
+}
+
+.preview_image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.delete_button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: red;
+    background-color: white;
+    z-index: 1;
 }

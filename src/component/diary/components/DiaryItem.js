@@ -20,13 +20,36 @@ const DiaryItem = ({
 }) => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [imageUrl, setImageUrl] = useState('');
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    useEffect(() => {
+        const fetchImage = async () => {
+            try {
+                // 다이어리 번호를 통해 이미지 URL을 가져옵니다.
+                const response = await axios.get(
+                    `http://localhost:8090/api/diary/image/${diaryNo}`,
+                    { responseType: 'blob' }, // 이미지 파일을 Blob 형태로 요청
+                );
+
+                // 이미지 URL을 Blob 객체에서 URL로 변환합니다.
+                const imageUrl = URL.createObjectURL(response.data);
+                setImageUrl(imageUrl);
+            } catch (error) {
+                console.error('Error fetching image:', error);
+            }
+        };
+
+        fetchImage();
+    }, [diaryNo]);
+
     return (
         <div className="DiaryItem">
-            <div className="img_section"></div>
+            <div className="img_section">
+                {imageUrl && <img src={imageUrl} alt="Diary" />}
+            </div>
             <div className="info_section">
                 <div>
                     <Rating
