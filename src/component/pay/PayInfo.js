@@ -81,6 +81,7 @@ function PayInfo() {
         navigate('/pay/Paypassword', {
             state: {
                 companyno,
+                content: companyName,
                 amount,
                 peramount,
                 bonus,

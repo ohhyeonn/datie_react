@@ -68,13 +68,13 @@ const showloading = (setDarkOverlay) => {
 function Payresult() {
     const navigate = useNavigate();
     const location = useLocation();
-    const { companyno, amount, peramount, bonus, cardno } =
+    const { companyno, content, amount, peramount, bonus, cardno } =
         location.state || {};
 
     const [darkOverlay, setDarkOverlay] = useState(false);
 
     useEffect(() => {
-        console.log(cardno, companyno, amount, peramount, bonus);
+        console.log(cardno, companyno, content, amount, peramount, bonus);
 
         const processPayment = async () => {
             await showloading(setDarkOverlay); // 로딩 표시
@@ -82,6 +82,7 @@ function Payresult() {
                 .post('http://localhost:8090/api/payresult', {
                     cardno,
                     companyno,
+                    content,
                     amount,
                     peramount,
                     bonus,
