@@ -1,13 +1,10 @@
 import './DiaryItem.css';
-import Button from './Button';
 import React, { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import { Rating } from '@mui/material';
 import EditButton from './EditButton';
 import Editor from './Editor';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 const DiaryItem = ({
@@ -18,37 +15,42 @@ const DiaryItem = ({
     uploadOrg,
     uploadReal,
 }) => {
-    const navigate = useNavigate();
     const [open, setOpen] = useState(false);
+    const [imageModalOpen, setImageModalOpen] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
+    const [images, setImages] = useState([]);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
+    const handleImageModalOpen = () => setImageModalOpen(true);
+    const handleImageModalClose = () => setImageModalOpen(false);
+
     useEffect(() => {
-        const fetchImage = async () => {
+        const fetchImages = async () => {
             try {
-                // 다이어리 번호를 통해 이미지 URL을 가져옵니다.
+                // 다이어리 번호를 통해 이미지 URL 목록을 가져옵니다.
                 const response = await axios.get(
                     `http://localhost:8090/api/diary/image/${diaryNo}`,
-                    { responseType: 'blob' }, // 이미지 파일을 Blob 형태로 요청
+                    // { responseType: 'blob' }, // 이미지 파일을 Blob 형태로 요청
                 );
 
-                // 이미지 URL을 Blob 객체에서 URL로 변환합니다.
-                const imageUrl = URL.createObjectURL(response.data);
-                setImageUrl(imageUrl);
+                // 이미지 URL을 state에 저장합니다.
+                // const imageUrl = URL.createObjectURL(response.data);
+                setImages(response.data);
+                console.log(response.data);
             } catch (error) {
-                console.error('Error fetching image:', error);
+                console.error('Error fetching images:', error);
             }
         };
 
-        fetchImage();
+        fetchImages();
     }, [diaryNo]);
 
     return (
         <div className="DiaryItem">
-            <div className="img_section">
-                {imageUrl && <img src={imageUrl} alt="Diary" />}
+            <div className="img_section" onClick={handleImageModalOpen}>
+                {images.length > 0 && <img src={images[0]} alt="Diary" />}
             </div>
             <div className="info_section">
                 <div>
@@ -72,7 +74,7 @@ const DiaryItem = ({
                 <EditButton onClick={handleOpen} />
             </div>
 
-            {/* Modal 컴포넌트 */}
+            {/* 기존 모달 컴포넌트 */}
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -100,6 +102,36 @@ const DiaryItem = ({
                         uploadOrg={uploadOrg}
                         onSubmit={handleClose} // 예시로 handleClose를 사용
                     />
+                </Box>
+            </Modal>
+
+            {/* 이미지 클릭 시 뜨는 새로운 모달 */}
+            <Modal
+                open={imageModalOpen}
+                onClose={handleImageModalClose}
+                aria-labelledby="image-modal-title"
+                aria-describedby="image-modal-description"
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: '80%', // 큰 화면에서 볼 수 있도록 크기 조절
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                    }}
+                >
+                    {imageUrl && (
+                        <img
+                            src={imageUrl}
+                            alt="Diary"
+                            style={{ width: '100%', height: 'auto' }} // 이미지가 모달에 맞게 표시되도록 설정
+                        />
+                    )}
                 </Box>
             </Modal>
         </div>
