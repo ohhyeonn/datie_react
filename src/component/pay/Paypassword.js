@@ -17,7 +17,8 @@ function PasswordInput() {
 
     //PayInfo로부터 받은 결제정보
     const location = useLocation();
-    const { companyno, amount, peramount, bonus } = location.state || {};
+    const { companyno, content, amount, peramount, bonus } =
+        location.state || {};
 
     useEffect(() => {
         // 컴포넌트가 처음 렌더링될 때 API 호출
@@ -44,6 +45,7 @@ function PasswordInput() {
                 navigate('/pay/Payresult', {
                     state: {
                         companyno,
+                        content,
                         amount,
                         peramount,
                         bonus,
