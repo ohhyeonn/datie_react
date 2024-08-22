@@ -49,16 +49,42 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
                 const infowindow = new window.kakao.maps.InfoWindow({
                     content: `
                         <div class="info-window">
-                            <h3>${placeNames[index]}</h3>
-
+                            <h3>${placeNames[index]}</h3><br>
+                            <a href="https://search.naver.com/search.naver?query=${encodeURIComponent(
+                                placeNames[index],
+                            )}" target="_blank">→네이버에서 검색</a>
                         </div>
                     `,
                 });
+
+                let isInfoWindowOpen = false; // 인포윈도우 열림 상태를 저장하는 변수
+
+                // 마커에 mouseover 이벤트를 등록합니다.
                 window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-                    infowindow.open(map, marker);
+                    if (!isInfoWindowOpen) {
+                        infowindow.open(map, marker);
+                    }
                 });
+
+                // 마커에 mouseout 이벤트를 등록합니다.
                 window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-                    infowindow.close();
+                    if (!isInfoWindowOpen) {
+                        infowindow.close();
+                    }
+                });
+
+                // 마커에 click 이벤트를 등록하여 클릭 시 인포윈도우 열고 닫기, 지도 중심 이동/복원 처리
+                window.kakao.maps.event.addListener(marker, 'click', () => {
+                    if (isInfoWindowOpen) {
+                        // 인포윈도우가 열려 있으면 닫고, 지도를 원래 위치로 이동
+                        infowindow.close();
+                        map.setBounds(bounds);
+                    } else {
+                        // 인포윈도우가 닫혀 있으면 열고, 지도를 마커 위치로 이동
+                        infowindow.open(map, marker);
+                        map.panTo(marker.getPosition());
+                    }
+                    isInfoWindowOpen = !isInfoWindowOpen; // 상태 토글
                 });
 
                 // LatLngBounds 객체에 좌표를 추가합니다.
@@ -67,11 +93,6 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
 
             // 지도의 범위를 설정합니다.
             map.setBounds(bounds);
-
-            // 지도 범위를 재설정하는 함수입니다.
-            const setBounds = () => {
-                map.setBounds(bounds);
-            };
         };
 
         document.head.appendChild(script);
@@ -103,11 +124,14 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
                     }
                     .info-window h3 {
                         margin: 0;
-                        font-size: 16px;
-                        color: #007aff;
+                        font-size: 20px;
+                        color: black;
                     }
                     .info-window p {
                         margin: 5px 0;
+                    }
+                    .search-link-container {
+                        text-align: right; /* 오른쪽 정렬 */
                     }
                     .info-window a {
                         color: #007aff;
