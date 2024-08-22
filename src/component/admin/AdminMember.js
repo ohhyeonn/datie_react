@@ -18,8 +18,39 @@ const columns = [
     { field: 'id', headerName: '번호', width: 50 },
     { field: 'userId', headerName: '아이디', width: 130 },
     { field: 'name', headerName: '이름', width: 130 },
-    { field: 'status', headerName: '멤버상태', width: 130 },
-    { field: 'cstatus', headerName: '카드상태', width: 130 },
+    {
+        field: 'status',
+        headerName: '멤버상태',
+        width: 130,
+        valueGetter: (params) => {
+            // 상태 값을 문자열로 변환
+            const statusMap = {
+                0: '탈퇴',
+                1: '이용중',
+                2: '관리자',
+            };
+
+            return statusMap[params] || '알 수 없음';
+        },
+    },
+
+    {
+        field: 'cstatus',
+        headerName: '카드상태',
+        width: 130,
+        valueGetter: (params) => {
+            // 상태 값을 문자열로 변환
+            const statusMap = {
+                0: '미사용',
+                1: '사용중',
+                2: '정지',
+                3: '해지',
+                4: '정지신청',
+            };
+
+            return statusMap[params] || '알 수 없음';
+        },
+    },
     { field: 'moddate', headerName: '가입일', width: 130 },
 ];
 
@@ -93,6 +124,11 @@ const Admin = () => {
                                 })
                                 .then((res) => {
                                     console.log(res);
+                                    alert('일괄 정지가 완료되었습니다.');
+                                    setParam({
+                                        searchType: searchTypeState,
+                                        searchWord: searchWordState,
+                                    });
                                 })
                                 .catch((error) => {
                                     console.error('에러 발생:', error);
@@ -128,6 +164,11 @@ const Admin = () => {
                                 })
                                 .then((res) => {
                                     console.log(res);
+                                    alert('일괄 해지가 완료되었습니다.');
+                                    setParam({
+                                        searchType: searchTypeState,
+                                        searchWord: searchWordState,
+                                    });
                                 })
                                 .catch((error) => {
                                     console.error('에러 발생:', error);
