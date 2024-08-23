@@ -6,9 +6,11 @@ import Box from '@mui/material/Box';
 import { Rating } from '@mui/material';
 import EditButton from './EditButton';
 import Editor from './Editor';
-import { Link, useNavigate } from 'react-router-dom';
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
+// 기본 이미지 URL
+const DEFAULT_IMAGE_URL = 'http://localhost:8090/api/diary/image/default.png';
 
 const DiaryItem = ({
     diaryNo,
@@ -19,42 +21,61 @@ const DiaryItem = ({
     uploadReal,
 }) => {
     const navigate = useNavigate();
-    const [open, setOpen] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
+    const [openEditorModal, setOpenEditorModal] = useState(false);
+    const [openImageModal, setOpenImageModal] = useState(false);
+    const [imageUrls, setImageUrls] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
 
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const handleOpenEditorModal = () => setOpenEditorModal(true);
+    const handleCloseEditorModal = () => setOpenEditorModal(false);
+
+    const handleOpenImageModal = () => setOpenImageModal(true);
+    const handleCloseImageModal = () => setOpenImageModal(false);
 
     useEffect(() => {
-        const fetchImage = async () => {
-            try {
-                // 다이어리 번호를 통해 이미지 URL을 가져옵니다.
-                const response = await axios.get(
-                    `http://localhost:8090/api/diary/image/${diaryNo}`,
-                    { responseType: 'blob' }, // 이미지 파일을 Blob 형태로 요청
-                );
-
-                // 이미지 URL을 Blob 객체에서 URL로 변환합니다.
-                const imageUrl = URL.createObjectURL(response.data);
-                setImageUrl(imageUrl);
-            } catch (error) {
-                console.error('Error fetching image:', error);
-            }
-        };
-
-        fetchImage();
+        // 이미지 URL 리스트를 가져오기
+        axios
+            .get(`http://localhost:8090/api/diary/images/${diaryNo}`)
+            .then((response) => {
+                setImageUrls(response.data);
+                if (response.data.length > 0) {
+                    setCurrentIndex(0); // 첫 번째 이미지를 기본으로 설정
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching image URLs:', error);
+            });
     }, [diaryNo]);
+
+    const goToPreviousImage = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === 0 ? imageUrls.length - 1 : prevIndex - 1,
+        );
+    };
+
+    const goToNextImage = () => {
+        setCurrentIndex((prevIndex) =>
+            prevIndex === imageUrls.length - 1 ? 0 : prevIndex + 1,
+        );
+    };
 
     return (
         <div className="DiaryItem">
             <div className="img_section">
-                {imageUrl && <img src={imageUrl} alt="Diary" />}
+                <img
+                    src={
+                        imageUrls.length > 0 ? imageUrls[0] : DEFAULT_IMAGE_URL
+                    }
+                    alt="Diary"
+                    onClick={handleOpenImageModal}
+                    style={{ cursor: 'pointer' }}
+                />
             </div>
             <div className="info_section">
                 <div>
                     <Rating
                         name={rate ? 'conditional-read-only' : 'no-value'}
-                        value={rate || null} // rate가 없으면 null로 설정
+                        value={rate || null}
                         size="small"
                         readOnly={true}
                     />
@@ -69,15 +90,15 @@ const DiaryItem = ({
                 </div>
             </div>
             <div className="button_section">
-                <EditButton onClick={handleOpen} />
+                <EditButton onClick={handleOpenEditorModal} />
             </div>
 
-            {/* Modal 컴포넌트 */}
+            {/* Editor Modal 컴포넌트 */}
             <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-title"
-                aria-describedby="modal-description"
+                open={openEditorModal}
+                onClose={handleCloseEditorModal}
+                aria-labelledby="editor-modal-title"
+                aria-describedby="editor-modal-description"
             >
                 <Box
                     sx={{
@@ -98,8 +119,54 @@ const DiaryItem = ({
                         rate={rate}
                         review={review}
                         uploadOrg={uploadOrg}
-                        onSubmit={handleClose} // 예시로 handleClose를 사용
+                        onSubmit={handleCloseEditorModal}
                     />
+                </Box>
+            </Modal>
+
+            {/* Image Gallery Modal 컴포넌트 */}
+            <Modal
+                open={openImageModal}
+                onClose={handleCloseImageModal}
+                aria-labelledby="image-modal-title"
+                aria-describedby="image-modal-description"
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        maxHeight: '80%',
+                        bgcolor: 'background.paper',
+                        boxShadow: 24,
+                        p: 4,
+                        borderRadius: 2,
+                        overflow: 'hidden',
+                    }}
+                >
+                    {imageUrls.length > 0 && (
+                        <div className="image-slider">
+                            <button
+                                className="slider-button prev"
+                                onClick={goToPreviousImage}
+                            >
+                                &lt;
+                            </button>
+                            <img
+                                src={imageUrls[currentIndex]}
+                                alt={`Diary ${currentIndex}`}
+                                style={{ width: '100%', height: 'auto' }}
+                            />
+                            <button
+                                className="slider-button next"
+                                onClick={goToNextImage}
+                            >
+                                &gt;
+                            </button>
+                        </div>
+                    )}
                 </Box>
             </Modal>
         </div>

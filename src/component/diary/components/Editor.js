@@ -4,14 +4,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Rating } from '@mui/material';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 
 const Editor = ({ diaryNo, companyName, rate, review, onSubmit }) => {
     const [value, setValue] = useState(rate || 0);
     const [reviewText, setReviewText] = useState(review || '');
     const [selectedImages, setSelectedImages] = useState([]);
+    const [fadingImageIndex, setFadingImageIndex] = useState(null); // 상태 추가
     const fileInputRef = React.useRef(null);
     const navigate = useNavigate();
 
@@ -76,17 +75,26 @@ const Editor = ({ diaryNo, companyName, rate, review, onSubmit }) => {
                     rate: value,
                     review: reviewText,
                 });
-                // 성공 시에 navigate 또는 다른 로직 추가 가능
+                // 알림 표시
+                alert('작성이 완료되었습니다');
+                // navigate를 사용하여 페이지를 새로 고침
+                navigate(0); // 페이지를 새로 고침
             }
         } catch (error) {
             console.error('Error uploading data:', error);
         }
     };
 
-    const handleImageRemove = (index) => {
-        setSelectedImages((prevImages) =>
-            prevImages.filter((_, i) => i !== index),
-        );
+    const handleImageClick = (index) => {
+        setFadingImageIndex(index);
+
+        // 애니메이션 후 이미지 삭제
+        setTimeout(() => {
+            setSelectedImages((prevImages) =>
+                prevImages.filter((_, i) => i !== index),
+            );
+            setFadingImageIndex(null);
+        }, 500); // 애니메이션과 동일한 시간
     };
 
     const handleFileInputClick = () => {
@@ -137,18 +145,20 @@ const Editor = ({ diaryNo, companyName, rate, review, onSubmit }) => {
                     <div className="image_preview">
                         {selectedImages.length > 0 &&
                             selectedImages.map((image, index) => (
-                                <div key={index} className="image_container">
+                                <div
+                                    key={index}
+                                    className="image_container"
+                                    onClick={() => handleImageClick(index)}
+                                >
                                     <img
                                         src={URL.createObjectURL(image)}
                                         alt={`selected ${index}`}
-                                        className="preview_image"
+                                        className={`preview_image ${
+                                            fadingImageIndex === index
+                                                ? 'fade-out'
+                                                : ''
+                                        }`}
                                     />
-                                    <IconButton
-                                        className="delete_button"
-                                        onClick={() => handleImageRemove(index)}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
                                 </div>
                             ))}
                     </div>

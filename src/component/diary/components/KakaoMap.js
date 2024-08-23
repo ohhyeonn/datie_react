@@ -39,9 +39,20 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
             const bounds = new window.kakao.maps.LatLngBounds();
 
             points.forEach((point, index) => {
+                // 커스텀 마커 이미지 설정
+                const markerImage = new window.kakao.maps.MarkerImage(
+                    'http://localhost:8090/api/diary/image/restorant.png', // 마커 이미지 URL
+                    new window.kakao.maps.Size(30, 30), // 이미지 크기 (가로, 세로)
+                    {
+                        // 이미지 좌표 설정
+                        offset: new window.kakao.maps.Point(27, 69),
+                    },
+                );
+
                 // 각 좌표에 마커를 추가합니다.
                 const marker = new window.kakao.maps.Marker({
                     position: point,
+                    image: markerImage, // 커스텀 이미지 설정
                 });
                 marker.setMap(map);
 
