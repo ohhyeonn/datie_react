@@ -8,6 +8,7 @@ import ProfileComparison from './component/cardselection_second/ProfileCompariso
 import CardInfoInput from './component/cardselection_3/CardInfoInput';
 import LoginPage from './component/Login/LoginPage';
 import Paypassword from './component/pay/Paypassword';
+
 import PayInfo from './component/pay/PayInfo';
 import IndexMain from './component/mainIndex/IndexMain';
 import Payresult from './component/pay/Payresult';
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<IndexMain />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
+
             <Route path="/pay/PayInfo" element={<PayInfo />} />
             <Route path="/admin/member" element={<AdminMember />} />
             <Route path="/admin" element={<AdminStatistics />} />
@@ -55,6 +57,7 @@ function App() {
             <Route path="/view-profile/:email" element={<ViewProfile />} />
             <Route path="/diary" element={<DiaryHome />} />
             <Route path="/diary/detail/:date" element={<DiaryDetail />} />
+
             <Route path="/" element={<LoginPage />} />
         </Routes>
     );
