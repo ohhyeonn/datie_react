@@ -70,20 +70,6 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
 
                 let isInfoWindowOpen = false; // 인포윈도우 열림 상태를 저장하는 변수
 
-                // 마커에 mouseover 이벤트를 등록합니다.
-                window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-                    if (!isInfoWindowOpen) {
-                        infowindow.open(map, marker);
-                    }
-                });
-
-                // 마커에 mouseout 이벤트를 등록합니다.
-                window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-                    if (!isInfoWindowOpen) {
-                        infowindow.close();
-                    }
-                });
-
                 // 마커에 click 이벤트를 등록하여 클릭 시 인포윈도우 열고 닫기, 지도 중심 이동/복원 처리
                 window.kakao.maps.event.addListener(marker, 'click', () => {
                     if (isInfoWindowOpen) {
