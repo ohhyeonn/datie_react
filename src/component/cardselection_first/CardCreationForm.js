@@ -17,7 +17,7 @@ const CardCreationForm = () => {
     const navigate = useNavigate(); // useNavigate 훅 사용
     useEffect(() => {
         // 로컬 스토리지에서 토큰 가져오기
-        const storedToken = localStorage.getItem('token'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
+        const storedToken = localStorage.getItem('jwt'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
         if (storedToken) {
             setToken(storedToken);
         }
@@ -30,7 +30,7 @@ const CardCreationForm = () => {
             const userId = decoded.id;
             userno1 = decoded.userno;
         }
-
+        
         console.log(userno1); // 토큰에서 가져오는 userno
 
         const requestBody = {
