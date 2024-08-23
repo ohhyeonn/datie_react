@@ -1,21 +1,37 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Button as MuiButton, TextField } from "@mui/material";
-import ResponsiveAppBar from "../RealHeader";
-import Footer from "../Footer";
-import Header from "../Header";
-import { useNavigate } from "react-router-dom"; // useNavigate 사용
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Button as MuiButton, TextField } from '@mui/material';
+import ResponsiveAppBar from '../RealHeader';
+import Footer from '../Footer';
+import Header from '../Header';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; // useNavigate 사용
+import { Token } from '@mui/icons-material';
+import { jwtDecode } from 'jwt-decode';
 
 const CardCreationForm = () => {
-  const [loverId, setLoverId] = useState("");
-  const [loverPw, setLoverPw] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const navigate = useNavigate(); // useNavigate 훅 사용
-
-  const handleSubmit = () => {
-    const validId = "validId"; // 데이터베이스에 있는 ID
-    const validPw = "validPassword"; // 데이터베이스에 있는 비밀번호
-
+    const [token, setToken] = useState('');
+    const [loverId, setLoverId] = useState('');
+    const [loverPw, setLoverPw] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate(); // useNavigate 훅 사용
+    useEffect(() => {
+        // 로컬 스토리지에서 토큰 가져오기
+        const storedToken = localStorage.getItem('jwt'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
+        if (storedToken) {
+            setToken(storedToken);
+        }
+    }, []);
+    const handleSubmit = async () => {
+        let userno1;
+        if (token) {
+            const decoded = jwtDecode(token); // 수정된 호출
+            console.log(decoded); // 디코딩된 정보 출력
+            const userId = decoded.id;
+            userno1 = decoded.userno;
+        }
+        
+        console.log(userno1); // 토큰에서 가져오는 userno
     if (loverId === validId && loverPw === validPw) {
       navigate("/특정주소"); // 라우트에 설정한 주소로 이동
     } else {
