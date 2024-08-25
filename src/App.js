@@ -11,6 +11,7 @@ import Paypassword from './component/pay/Paypassword';
 
 import PayInfo from './component/pay/PayInfo';
 import IndexMain from './component/mainIndex/IndexMain';
+import LoginMain from './component/mainIndex/LoginMain';
 import Payresult from './component/pay/Payresult';
 import AdminMember from './component/admin/AdminMember';
 import AdminStatistics from './component/admin/AdminStatistics';
@@ -22,9 +23,6 @@ import EditProfile from './component/profile/EditProfile';
 import ViewProfile from './component/profile/ViewProfile';
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
-
-import IndexMain from './component/mainIndex/IndexMain';
-import Payresult from './component/pay/Payresult';
 
 function App() {
     return (
@@ -40,6 +38,7 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<IndexMain />} />
+            <Route path="/main" element={<LoginMain />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
 
