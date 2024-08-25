@@ -21,7 +21,9 @@ function DiaryDetail() {
         const fetchDiaryDetail = async () => {
             try {
                 const response = await axios.get(
-                    `http://localhost:8090/api/diary/detail?userNo=${userNo}&confirmDate=${formattedDate.format('YYYY-MM-DD')}`,
+                    `http://localhost:8090/api/diary/detail?userNo=${userNo}&confirmDate=${formattedDate.format(
+                        'YYYY-MM-DD',
+                    )}`,
                 );
                 setData(response.data); // API 응답 데이터를 state에 설정
             } catch (error) {
@@ -77,13 +79,22 @@ function DiaryDetail() {
     }, [data]);
 
     const diaryData = data.map(
-        ({ diaryNo, companyName, rate, review, uploadOrg, uploadReal }) => ({
+        ({
             diaryNo,
             companyName,
             rate,
             review,
             uploadOrg,
             uploadReal,
+            category,
+        }) => ({
+            diaryNo,
+            companyName,
+            rate,
+            review,
+            uploadOrg,
+            uploadReal,
+            category,
         }),
     );
 
@@ -96,6 +107,7 @@ function DiaryDetail() {
                     <KakaoMap
                         locations={locations}
                         placeNames={diaryData.map((item) => item.companyName)}
+                        categorys={diaryData.map((item) => item.category)}
                     />
                     <DiaryList data={diaryData} date={formattedDate} />
                 </div>

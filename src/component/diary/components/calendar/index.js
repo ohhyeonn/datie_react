@@ -8,15 +8,38 @@ import {
     StyledHeart, // 새로 생성한 StyledHeart 임포트
 } from './styles';
 import moment from 'moment';
+import { jwtDecode } from 'jwt-decode';
 
 const DogInfo = () => {
+    let token;
     const navigate = useNavigate();
     const today = new Date();
     const [date, setDate] = useState(today);
     const [activeStartDate, setActiveStartDate] = useState(today);
     const [attendDay, setAttendDay] = useState([]); // State to store the attendance dates
+    let userNo = 0;
+
+    // useEffect(() => {
+    //     // 로컬 스토리지에서 토큰 가져오기
+    //     const storedToken = localStorage.getItem('jwt'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
+    //     if (storedToken) {
+    //         setToken(storedToken);
+    //     }
+    // }, []);
 
     useEffect(() => {
+        // 로컬 스토리지에서 토큰 가져오기
+        const storedToken = localStorage.getItem('jwt'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
+        if (storedToken) {
+            token = storedToken;
+        }
+        if (token) {
+            const decoded = jwtDecode(token); // 수정된 호출
+            console.log(decoded); // 디코딩된 정보 출력
+            userNo = decoded.userno;
+        }
+        console.log(userNo);
+
         // Fetch attendance dates from the API
         const fetchAttendanceDates = async () => {
             try {
@@ -24,7 +47,7 @@ const DogInfo = () => {
                     'http://localhost:8090/api/diary/confirmdate',
                     {
                         params: {
-                            userno: 62, // Replace '62' with the actual userno if needed
+                            userno: userNo, // Replace '62' with the actual userno if needed
                         },
                     },
                 );
