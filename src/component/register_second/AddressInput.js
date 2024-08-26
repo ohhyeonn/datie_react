@@ -1,112 +1,147 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { Button as MuiButton } from "@mui/material";
-import DaumPostcode from "react-daum-postcode";
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import { Button as MuiButton, TextField } from '@mui/material';
+import DaumPostcode from 'react-daum-postcode';
 
-const AddressInput = ({ setAddress }) => {
-  const [detailAddress, setDetailAddress] = useState("");
-  const [isOpenPost, setIsOpenPost] = useState(false);
+const AddressInput = ({ setAddress, setDetailAddress }) => {
+    const [detailAddress, setLocalDetailAddress] = useState('');
+    const [isOpenPost, setIsOpenPost] = useState('');
+    const [extraAddress, setExtraAddress] = useState('');
+    const [address, setLocalAddress] = useState('');
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src =
+            'https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+        script.async = true;
+        document.head.appendChild(script);
 
-  const onCompletePost = (data) => {
-    let fullAddr = data.address;
-    let extraAddr = "";
+        script.onload = () => {
+            console.log('Daum Postcode script loaded');
+        };
 
-    if (data.addressType === "R") {
-      if (data.bname !== "") {
-        extraAddr += data.bname;
-      }
-      if (data.buildingName !== "") {
-        extraAddr +=
-          extraAddr !== "" ? `, ${data.buildingName}` : data.buildingName;
-      }
-      fullAddr += extraAddr !== "" ? ` (${extraAddr})` : "";
-    }
+        return () => {
+            document.head.removeChild(script);
+        };
+    }, []);
 
-    setAddress(fullAddr); // 전체 주소를 부모 컴포넌트로 전달
-    setDetailAddress(""); // 상세 주소 초기화
-    setIsOpenPost(false);
-  };
+    const handleAddressSearch = () => {
+        if (window.daum && window.daum.Postcode) {
+            new window.daum.Postcode({
+                oncomplete: (data) => {
+                    let addr = '';
+                    let extraAddr = '';
 
-  const postCodeStyle = {
-    display: "block",
-    position: "relative",
-    top: "0%",
-    width: "100%",
-    height: "400px",
-    padding: "7px",
-  };
+                    if (data.userSelectedType === 'R') {
+                        addr = data.roadAddress;
+                    } else {
+                        addr = data.jibunAddress;
+                    }
 
-  return (
-    <StyledAddressWrapper>
-      <StyledMiddiv>
-        <StyledAddressInputField
-          placeholder="주소를 입력하세요"
-          aria-label="주소 입력"
-          value={detailAddress} // 상세 주소 상태를 여기서 사용
-          readOnly
-        />
-        <MuiButton
-          variant="contained"
-          sx={{
-            backgroundColor: "rgb(148, 160, 227)",
-            "&:hover": {
-              backgroundColor: "rgb(120, 140, 200)",
-            },
-            width: "100px",
-            fontFamily: '"Gamja Flower", cursive',
-          }}
-          onClick={() => setIsOpenPost(true)}
-        >
-          주소찾기
-        </MuiButton>
-      </StyledMiddiv>
-      {isOpenPost && (
-        <DaumPostcode
-          style={postCodeStyle}
-          autoClose
-          onComplete={onCompletePost}
-        />
-      )}
-      <StyledDetailInput
-        value={detailAddress}
-        onChange={(e) => setDetailAddress(e.target.value)}
-        placeholder="상세 주소를 입력해주세요"
-        aria-label="상세 주소"
-      />
-    </StyledAddressWrapper>
-  );
+                    if (data.userSelectedType === 'R') {
+                        if (
+                            data.bname !== '' &&
+                            /[동|로|가]$/g.test(data.bname)
+                        ) {
+                            extraAddr += data.bname;
+                        }
+                        if (
+                            data.buildingName !== '' &&
+                            data.apartment === 'Y'
+                        ) {
+                            extraAddr +=
+                                extraAddr !== ''
+                                    ? ', ' + data.buildingName
+                                    : data.buildingName;
+                        }
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                    }
+
+                    setLocalAddress(addr);
+                    setExtraAddress(extraAddr);
+                    setAddress(addr + extraAddr);
+                    document.getElementById('detailedAddress').focus(); // 포커스 설정
+                },
+            }).open();
+        } else {
+            console.error('Daum Postcode script is not loaded.');
+        }
+    };
+
+    const handleDetailAddressChange = (e) => {
+        setLocalDetailAddress(e.target.value);
+        setDetailAddress(e.target.value); // 부모 컴포넌트로 상세주소 전달
+    };
+
+    return (
+        <StyledAddressWrapper>
+            <StyledMiddiv>
+                <TextField
+                    id="address"
+                    label=""
+                    variant="standard"
+                    value={address}
+                    // onChange={handleAddressChange}
+                    sx={{ width: '80%' }}
+                />
+                <MuiButton
+                    variant="contained"
+                    sx={{
+                        ml: 2,
+                        backgroundColor: 'rgb(148, 160, 227)',
+                        color: 'white',
+                        '&:hover': {
+                            backgroundColor: 'rgb(120, 140, 200)',
+                        },
+                        width: '125px',
+                    }}
+                    onClick={handleAddressSearch}
+                >
+                    주소찾기
+                </MuiButton>
+            </StyledMiddiv>
+            <StyledDetailInput
+                id="detailedAddress"
+                value={detailAddress}
+                onChange={handleDetailAddressChange}
+                placeholder="상세 주소를 입력해주세요"
+                aria-label="상세 주소"
+            />
+        </StyledAddressWrapper>
+    );
 };
 
 const StyledMiddiv = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 12px;
 `;
 
 const StyledAddressWrapper = styled.div`
-  margin-bottom: 10px;
+    margin-bottom: 10px;
 `;
 
 const StyledAddressInputField = styled.input`
-  border-radius: 3px;
-  width: 100%;
-  background-color: #fff;
-  font-size: 10px;
-  color: #757373;
-  padding: 12px 13px;
-  border: 1px solid #c0bdbd;
+    border-radius: 3px;
+    width: 100%;
+    background-color: #fff;
+    font-size: 10px;
+    color: #757373;
+    padding: 12px 13px;
+    border: 1px solid #c0bdbd;
 `;
 
 const StyledDetailInput = styled.input`
-  border-radius: 3px;
-  width: 100%;
-  background-color: #fff;
-  font-size: 10px;
-  color: #757373;
-  padding: 12px 13px;
-  border: 1px solid #c0bdbd;
-  margin-top: 8px;
+    border-radius: 3px;
+    width: 95%;
+    background-color: #fff;
+    font-size: 10px;
+    color: #757373;
+    padding: 12px 13px;
+    border: 1px solid #c0bdbd;
+    margin-top: 8px;
 `;
 
 export default AddressInput;
