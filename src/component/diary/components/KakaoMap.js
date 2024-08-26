@@ -1,22 +1,22 @@
 import React, { useEffect } from 'react';
 
-const KakaoMap = ({ locations = [], placeNames = [] }) => {
+const KakaoMap = ({ locations = [], placeNames = [], categorys = [] }) => {
+    console.log(placeNames);
+    console.log(categorys);
+
     useEffect(() => {
-        // 지도 API를 로드합니다.
         const script = document.createElement('script');
         script.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=0f55f3f4dc76f68cac78d6f8bbbabb17`;
         script.async = true;
         script.onload = () => {
-            // 지도를 초기화합니다.
-            const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+            const mapContainer = document.getElementById('map');
             const mapOption = {
-                center: new window.kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-                level: 3, // 지도의 확대 레벨
+                center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+                level: 3,
             };
 
-            const map = new window.kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+            const map = new window.kakao.maps.Map(mapContainer, mapOption);
 
-            // 유효한 좌표 배열을 생성합니다.
             const points = Array.isArray(locations)
                 ? locations
                       .map((location) => {
@@ -35,52 +35,92 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
                       .filter((point) => point !== null)
                 : [];
 
-            // 지도 범위를 설정하기 위한 LatLngBounds 객체를 생성합니다.
             const bounds = new window.kakao.maps.LatLngBounds();
 
             points.forEach((point, index) => {
-                // 각 좌표에 마커를 추가합니다.
+                let imageUrl = 'http://localhost:8090/api/diary/image/etc.png';
+
+                switch (categorys[index]) {
+                    case '식료품':
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/food.png';
+                        break;
+                    case '외식':
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/restaurant.png';
+                        break;
+                    case '교통비':
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/transportation.png';
+                        break;
+                    case '의료비':
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/hospital.png';
+                        break;
+                    case '쇼핑':
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/shopping.png';
+                        break;
+                    case '문화/여가':
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/culture.png';
+                        break;
+                    default:
+                        imageUrl =
+                            'http://localhost:8090/api/diary/image/etc.png';
+                        break;
+                }
+
+                const markerImage = new window.kakao.maps.MarkerImage(
+                    imageUrl,
+                    new window.kakao.maps.Size(40, 40),
+                    {
+                        offset: new window.kakao.maps.Point(27, 69),
+                    },
+                );
+
                 const marker = new window.kakao.maps.Marker({
                     position: point,
+                    image: markerImage,
                 });
                 marker.setMap(map);
 
-                // 인포윈도우를 추가합니다.
                 const infowindow = new window.kakao.maps.InfoWindow({
                     content: `
                         <div class="info-window">
-                            <h3>${placeNames[index]}</h3>
-
+                            <h3>${placeNames[index]}</h3><br>
+                            <a href="https://search.naver.com/search.naver?query=${encodeURIComponent(
+                                placeNames[index],
+                            )}" target="_blank">→네이버에서 검색</a>
                         </div>
                     `,
                 });
-                window.kakao.maps.event.addListener(marker, 'mouseover', () => {
-                    infowindow.open(map, marker);
-                });
-                window.kakao.maps.event.addListener(marker, 'mouseout', () => {
-                    infowindow.close();
+
+                let isInfoWindowOpen = false;
+
+                window.kakao.maps.event.addListener(marker, 'click', () => {
+                    if (isInfoWindowOpen) {
+                        infowindow.close();
+                        map.setBounds(bounds);
+                    } else {
+                        infowindow.open(map, marker);
+                        map.panTo(marker.getPosition());
+                    }
+                    isInfoWindowOpen = !isInfoWindowOpen;
                 });
 
-                // LatLngBounds 객체에 좌표를 추가합니다.
                 bounds.extend(point);
             });
 
-            // 지도의 범위를 설정합니다.
             map.setBounds(bounds);
-
-            // 지도 범위를 재설정하는 함수입니다.
-            const setBounds = () => {
-                map.setBounds(bounds);
-            };
         };
 
         document.head.appendChild(script);
 
         return () => {
-            // 컴포넌트가 언마운트될 때 스크립트를 제거합니다.
             document.head.removeChild(script);
         };
-    }, [locations, placeNames]);
+    }, [locations, placeNames, categorys]);
 
     return (
         <div>
@@ -103,11 +143,14 @@ const KakaoMap = ({ locations = [], placeNames = [] }) => {
                     }
                     .info-window h3 {
                         margin: 0;
-                        font-size: 16px;
-                        color: #007aff;
+                        font-size: 20px;
+                        color: black;
                     }
                     .info-window p {
                         margin: 5px 0;
+                    }
+                    .search-link-container {
+                        text-align: right;
                     }
                     .info-window a {
                         color: #007aff;

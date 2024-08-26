@@ -33,7 +33,7 @@ function IndexMain() {
   }, []);
 
   const handleLoginClick = () => {
-    navigate("/loginMain?userno=1");  // 로그인 버튼 클릭 시 /loginMain 경로로 userno=1 파라미터와 함께 이동 (개발을 위해 그냥 로그인처리) TODO
+    navigate("/login");  // 로그인 버튼 클릭 시 /loginMain 경로로 userno=1 파라미터와 함께 이동 (개발을 위해 그냥 로그인처리) TODO
   };
 
   const handleSignClick = () => {

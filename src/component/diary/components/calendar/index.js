@@ -1,20 +1,67 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // 변경
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import {
     StyledCalendarWrapper,
     StyledCalendar,
-    StyledDate,
     StyledToday,
-    StyledDot,
+    StyledHeart, // 새로 생성한 StyledHeart 임포트
 } from './styles';
 import moment from 'moment';
+import { jwtDecode } from 'jwt-decode';
 
 const DogInfo = () => {
-    const navigate = useNavigate(); // 변경
+    let token;
+    const navigate = useNavigate();
     const today = new Date();
     const [date, setDate] = useState(today);
     const [activeStartDate, setActiveStartDate] = useState(today);
-    const attendDay = ['2024-08-03', '2024-08-13']; // Example attendance dates
+    const [attendDay, setAttendDay] = useState([]); // State to store the attendance dates
+    let userNo = 0;
+
+    // useEffect(() => {
+    //     // 로컬 스토리지에서 토큰 가져오기
+    //     const storedToken = localStorage.getItem('jwt'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
+    //     if (storedToken) {
+    //         setToken(storedToken);
+    //     }
+    // }, []);
+
+    useEffect(() => {
+        // 로컬 스토리지에서 토큰 가져오기
+        const storedToken = localStorage.getItem('jwt'); // 'token'은 실제 저장한 키로 변경할 수 있습니다.
+        if (storedToken) {
+            token = storedToken;
+        }
+        if (token) {
+            const decoded = jwtDecode(token); // 수정된 호출
+            console.log(decoded); // 디코딩된 정보 출력
+            userNo = decoded.userno;
+        }
+        console.log(userNo);
+
+        // Fetch attendance dates from the API
+        const fetchAttendanceDates = async () => {
+            try {
+                const response = await axios.get(
+                    'http://localhost:8090/api/diary/confirmdate',
+                    {
+                        params: {
+                            userno: userNo, // Replace '62' with the actual userno if needed
+                        },
+                    },
+                );
+                console.log('Fetched Dates:', response.data);
+                setAttendDay(
+                    response.data.map((ts) => moment(ts).format('YYYY-MM-DD')),
+                ); // Store the fetched dates in the attendDay state
+            } catch (error) {
+                console.error('Error fetching attendance dates:', error);
+            }
+        };
+
+        fetchAttendanceDates();
+    }, []);
 
     const handleDateChange = (newDate) => {
         setDate(newDate);
@@ -27,8 +74,11 @@ const DogInfo = () => {
     };
 
     const handleDateClick = (date) => {
-        // 변경
-        navigate(`detail/`); //${moment(date).format('YYYY-MM-DD')}
+        const formattedDate = moment(date).format('YYYY-MM-DD');
+        if (attendDay.includes(formattedDate)) {
+            // 클릭 가능한 날짜인지 확인
+            navigate(`/diary/detail/${formattedDate}`);
+        }
     };
 
     return (
@@ -53,22 +103,17 @@ const DogInfo = () => {
                 }
                 tileContent={({ date, view }) => {
                     let html = [];
+                    const formattedDate = moment(date).format('YYYY-MM-DD');
                     if (
                         view === 'month' &&
                         date.getMonth() === today.getMonth() &&
                         date.getDate() === today.getDate()
                     ) {
-                        html.push(<StyledToday key="today">오늘</StyledToday>);
+                        html.push(<StyledToday key="today"></StyledToday>);
                     }
-                    if (
-                        attendDay.find(
-                            (x) => x === moment(date).format('YYYY-MM-DD'),
-                        )
-                    ) {
+                    if (attendDay.includes(formattedDate)) {
                         html.push(
-                            <StyledDot
-                                key={moment(date).format('YYYY-MM-DD')}
-                            />,
+                            <StyledHeart key={formattedDate}>♡</StyledHeart>, // 하트를 표시
                         );
                     }
                     return <>{html}</>;

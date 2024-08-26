@@ -153,14 +153,12 @@ export const StyledToday = styled.div`
     transform: translateX(-50%);
 `;
 
-/* 출석한 날짜에 점 표시 스타일 */
-export const StyledDot = styled.div`
-    background-color: black;
-    border-radius: 50%;
-    width: 0.3rem;
-    height: 0.3rem;
+export const StyledHeart = styled.div`
+    color: red;
     position: absolute;
     top: 60%;
     left: 50%;
     transform: translateX(-50%);
+    font-size: 1rem; /* 하트의 크기 조정 */
+    line-height: 1;
 `;
