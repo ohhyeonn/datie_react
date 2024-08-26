@@ -376,7 +376,7 @@ const SignUpForm = () => {
                             width: '100px',
                             fontFamily: '"Gamja Flower", cursive',
                         }}
-                        onClick={() => alert('회원가입 취소')}
+                        onClick={() => navigate('/')}
                     >
                         취소
                     </MuiButton>
