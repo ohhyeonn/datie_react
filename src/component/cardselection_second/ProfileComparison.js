@@ -8,6 +8,9 @@ import { Button as MuiButton } from '@mui/material';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import type1Image from '../../assets/type1-front.png';
+import type2Image from '../../assets/type2-front.png';
+import type3Image from '../../assets/type3-front.png';
 const ProfileComparison = () => {
     const navigate = useNavigate();
 
@@ -48,18 +51,9 @@ const ProfileComparison = () => {
 
     // 여러 프로필 이미지 배열
     const profileImages = [
-        [
-            'https://cdn.builder.io/api/v1/image/assets/TEMP/cefa2657ac78df46c9f16ba1a2e1e7387a5adf6257f902137ce595524fdf319e?placeholderIfAbsent=true&apiKey=d9ab0808f42f485d9f1f9f59597e6744',
-            'TYPE 1. Must Have 가져야만해(Red)',
-        ],
-        [
-            'https://financialshopping-cdn.banksalad.com/_821321201f.png',
-            'TYPE 2. 어쩌구 저쩌구 카드염',
-        ],
-        [
-            'https://financialshopping-cdn.banksalad.com/IBK_f25a996347.png',
-            'TYPE 3. 맹구와 영구 카드',
-        ],
+        [type1Image, 'TYPE 1. 꽃길만 걷자(Pink)'],
+        [type2Image, 'TYPE 2. 다이노 하트(Orange)'],
+        [type3Image, 'TYPE 3. 다이노 그린(Green)'],
     ];
 
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
