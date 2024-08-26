@@ -23,12 +23,14 @@ import EditProfile from './component/profile/EditProfile';
 import ViewProfile from './component/profile/ViewProfile';
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
+import PaymentRecord from './component/payment_record/PaymentRecord';
 
 function App() {
     return (
         <Routes>
             <Route path="/verify" element={<SignUpComponent />} />
             <Route path="/signup" element={<SignUpForm />} />
+
             <Route path="/search_lover" element={<CardCreationForm />} />
             <Route path="/card_selection" element={<ProfileComparison />} />
             <Route path="/card_info" element={<CardInfoInput />} />
@@ -39,6 +41,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<IndexMain />} />
             <Route path="/main" element={<LoginMain />} />
+            <Route path="/paymentRecord" element={<PaymentRecord />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
 
@@ -59,8 +62,6 @@ function App() {
             <Route path="/view-profile/:userno" element={<ViewProfile />} />
             <Route path="/diary" element={<DiaryHome />} />
             <Route path="/diary/detail/:date" element={<DiaryDetail />} />
-
-            <Route path="/" element={<LoginPage />} />
         </Routes>
     );
 }
