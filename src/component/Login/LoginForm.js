@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { TextField } from '@mui/material';
 import { Button as MuiButton } from '@mui/material';
-import { useNavigate } from 'react-router-dom'; // React Router 사용
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const LoginForm = () => {
@@ -35,13 +35,11 @@ const LoginForm = () => {
 
                 // 로그인 성공 시 경로 이동
                 navigate('/'); // IndexMain 컴포넌트가 렌더링되는 경로
-            } else {
-                const errorData = await response.text();
-                console.error('로그인 실패:', errorData);
-                console.log('로그인 실패 이유:', errorData);
             }
         } catch (error) {
-            console.log(error);
+            if (error.response && error.response.status === 401) {
+                alert('아이디 / 비밀번호가 틀렸습니다.');
+            }
         }
     };
 
