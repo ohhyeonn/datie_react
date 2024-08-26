@@ -8,14 +8,27 @@ import ProfileComparison from './component/cardselection_second/ProfileCompariso
 import CardInfoInput from './component/cardselection_3/CardInfoInput';
 import LoginPage from './component/Login/LoginPage';
 import Paypassword from './component/pay/Paypassword';
+
+import PayInfo from './component/pay/PayInfo';
 import IndexMain from './component/mainIndex/IndexMain';
 import Payresult from './component/pay/Payresult';
+import AdminMember from './component/admin/AdminMember';
+import AdminStatistics from './component/admin/AdminStatistics';
+import CardPasswordChange from './component/profile/CardPasswordChange';
+import CardLostReport from './component/profile/CardLostReport';
+import CardLostReportCancellation from './component/profile/CardLostReportCancellation';
+import CardCancellation from './component/profile/CardCancellation';
+import EditProfile from './component/profile/EditProfile';
+import ViewProfile from './component/profile/ViewProfile';
+import DiaryDetail from './component/diary/pages/DiaryDetail';
+import DiaryHome from './component/diary/pages/DiaryHome';
 
 function App() {
     return (
         <Routes>
             <Route path="/verify" element={<SignUpComponent />} />
             <Route path="/signup" element={<SignUpForm />} />
+
             <Route path="/search_lover" element={<CardCreationForm />} />
             <Route path="/card_selection" element={<ProfileComparison />} />
             <Route path="/card_info" element={<CardInfoInput />} />
@@ -27,13 +40,24 @@ function App() {
             <Route path="/" element={<IndexMain />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
-            {/* <Route path="/" element={<SignUpComponent />} /> */}
-            {/* <Route path="/" element={<SignUpForm />} /> */}
-            {/* <Route path="/" element={<CardCreationForm />} /> */}
-            {/* <Route path="/" element={<ProfileComparison />} /> */}
-            {/* <Route path="/" element={<CardInfoInput />} /> */}
-            {/* <Route path="/" element={<CardApplicationComplete />} /> */}
-            <Route path="/" element={<LoginPage />} />
+
+            <Route path="/pay/PayInfo" element={<PayInfo />} />
+            <Route path="/admin/member" element={<AdminMember />} />
+            <Route path="/admin" element={<AdminStatistics />} />
+            <Route path="/card-lost-report" element={<CardLostReport />} />
+            <Route
+                path="/card-lost-report-cancellation"
+                element={<CardLostReportCancellation />}
+            />
+            <Route path="/card-cancellation" element={<CardCancellation />} />
+            <Route
+                path="/change-cardpassword"
+                element={<CardPasswordChange />}
+            />
+            <Route path="/edit-profile/:userno" element={<EditProfile />} />
+            <Route path="/view-profile/:userno" element={<ViewProfile />} />
+            <Route path="/diary" element={<DiaryHome />} />
+            <Route path="/diary/detail/:date" element={<DiaryDetail />} />
         </Routes>
     );
 }
