@@ -21,7 +21,7 @@ function LoginMain() {
   const [isFlipped, setIsFlipped] = useState(false); // 카드가 뒤집혔는지 여부
   const cardno = 13; // 실제 cardno로 변경하세요
 
-  const token = localStorage.getItem("jwtToken"); // JWT 토큰을 가져오는 부분
+  const token = localStorage.getItem("jwt"); // JWT 토큰을 가져오는 부분
 
   if (token) {
     const decoded = jwtDecode(token); // JWT 토큰 디코딩

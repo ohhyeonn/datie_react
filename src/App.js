@@ -23,6 +23,7 @@ import EditProfile from './component/profile/EditProfile';
 import ViewProfile from './component/profile/ViewProfile';
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
+import PaymentRecord from './component/payment_record/PaymentRecord';
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<IndexMain />} />
             <Route path="/main" element={<LoginMain />} />
+            <Route path="/paymentRecord" element={<PaymentRecord />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
 
