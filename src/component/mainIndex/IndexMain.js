@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";  // react-router-dom 사용
 import background from "../../assets/datie_background.webp";
-import logo from "../../assets/datie_logo.png"; // 로고 이미지 import
+import logo from "../../assets/datie_logo.png";
 import { Button as MuiButton } from "@mui/material";
 
 function IndexMain() {
   const [showButtons, setShowButtons] = useState(false);
   const buttonRef = useRef(null);
+  const navigate = useNavigate();  // useNavigate 훅 사용
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -16,7 +18,7 @@ function IndexMain() {
           }
         });
       },
-      { threshold: 0.1 } // 10% 이상 보여지면 트리거
+      { threshold: 0.1 }
     );
 
     if (buttonRef.current) {
@@ -29,6 +31,14 @@ function IndexMain() {
       }
     };
   }, []);
+
+  const handleLoginClick = () => {
+    navigate("/login");  // 로그인 버튼 클릭 시 /loginMain 경로로 userno=1 파라미터와 함께 이동 (개발을 위해 그냥 로그인처리) TODO
+  };
+
+  const handleSignClick = () => {
+    navigate("/signUp");  // 회원가입으로 이동
+  };
 
   return (
     <div
@@ -49,18 +59,18 @@ function IndexMain() {
           backgroundPosition: "center",
           width: "1024px",
           height: "1792px",
+          borderRadius: "8px",
           position: "relative",
         }}
       >
-        {/* 로고 이미지 추가 */}
         <div
           style={{
             position: "absolute",
-            top: "10px", // 화면 상단에서 약간 아래 위치
+            top: "10px",
             left: "50%",
-            transform: "translateX(-50%)", // 가로 중앙 정렬
-            zIndex: 1, // 로고가 다른 요소 위에 표시되도록 설정
-            paddingTop: "20px", // 상단 여백 추가
+            transform: "translateX(-50%)",
+            zIndex: 1,
+            paddingTop: "20px",
           }}
         >
           <img src={logo} alt="Datie Logo" style={{ width: "400px", height: "200px" }} />
@@ -160,8 +170,8 @@ function IndexMain() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            opacity: showButtons ? 1 : 0, // 버튼 가시성 제어
-            transition: "opacity 1s ease-in-out", // 서서히 나타나는 애니메이션
+            opacity: showButtons ? 1 : 0,
+            transition: "opacity 1s ease-in-out",
           }}
         >
           <MuiButton
@@ -177,6 +187,7 @@ function IndexMain() {
               fontSize: "20px",
               fontWeight: "bold",
             }}
+            onClick={handleSignClick}  // 로그인 버튼 클릭 이벤트 핸들러 추가
           >
             가입하기
           </MuiButton>
@@ -193,6 +204,7 @@ function IndexMain() {
               fontSize: "20px",
               fontWeight: "bold",
             }}
+            onClick={handleLoginClick}  // 로그인 버튼 클릭 이벤트 핸들러 추가
           >
             로그인
           </MuiButton>

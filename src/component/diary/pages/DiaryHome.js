@@ -1,8 +1,8 @@
 import React, { useReducer, useRef, useEffect, useState } from 'react';
 
-import RealHeader from '../../component/RealHeader';
-import Header from '../../component/Header';
-import Footer from '../../component/Footer';
+import RealHeader from '../../../component/RealHeader';
+import Header from '../../../component/Header';
+import Footer from '../../../component/Footer';
 import KakaoMap from '../components/KakaoMap';
 import DiaryItem from '../components/DiaryItem';
 import DiaryList from '../components/DiaryList';

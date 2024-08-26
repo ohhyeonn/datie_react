@@ -1,68 +1,102 @@
-import React, { useReducer, useRef, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import moment from 'moment';
 
-import RealHeader from '../../component/RealHeader';
-import Header from '../../component/Header';
-import Footer from '../../component/Footer';
+import axios from 'axios'; // axios 임포트
+
+import RealHeader from '../../../component/RealHeader';
+import Header from '../../../component/Header';
+import Footer from '../../../component/Footer';
 import KakaoMap from '../components/KakaoMap';
-import DiaryItem from '../components/DiaryItem';
 import DiaryList from '../components/DiaryList';
 
 function DiaryDetail() {
-    const [data, setData] = useState([
-        {
-            id: 1,
-            placeName: '고기살롱',
-            location: { lat: 37.5592446970721, lng: 126.921585110366 }, // 좌표로 변환할 부분
-            rate: 3,
-            review: '돼지양념구이 차돌박이 다 맛있다. 김치찌개는 안먹어봐서 모르겠음',
-            images: 'https://example.com/image1.jpg',
-        },
-        {
-            id: 2,
-            placeName: '피자스쿨 동교점',
-            location: { lat: 37.5584174249541, lng: 126.923127572449 }, // 좌표로 변환할 부분
-            rate: 1,
-            review: '여기갈바에 피자빵 사먹는다',
-            images: 'https://example.com/image1.jpg',
-        },
-        {
-            id: 3,
-            placeName: '포포야어묵',
-            location: { lat: 37.561252237874, lng: 126.920284581233 }, // 좌표로 변환할 부분
-            rate: 5,
-            review: '홍대 최고의 맛집. 특히 냉모밀은 전국탑급이다',
-            images: 'https://example.com/image1.jpg',
-        },
-        {
-            id: 4,
-            placeName: '도원 서교점',
-            location: { lat: 37.55613463001, lng: 126.919303944728 }, // 좌표로 변환할 부분
-            rate: '',
-            review: '',
-            images: 'https://example.com/image1.jpg',
-        },
-    ]);
+    const { date } = useParams(); // URL에서 date 파라미터를 가져옴
+    const formattedDate = moment(date, 'YYYY-MM-DD');
+    const userNo = 62;
+    const [locations, setLocations] = useState([]);
+    const [data, setData] = useState([]);
 
-    const geocoder = new kakao.maps.services.Geocoder();
-    geocoder.addressSearch('변환하고싶은주소', function (result, status) {
-        let x = null;
-        let y = null;
-        // 주소가 정상적으로 좌표로 변환되면
-        if (status === kakao.maps.services.Status.OK) {
-            x = result[0].x;
-            y = result[0].y;
+    useEffect(() => {
+        const fetchDiaryDetail = async () => {
+            try {
+                const response = await axios.get(
+                    `http://localhost:8090/api/diary/detail?userNo=${userNo}&confirmDate=${formattedDate.format(
+                        'YYYY-MM-DD',
+                    )}`,
+                );
+                setData(response.data); // API 응답 데이터를 state에 설정
+            } catch (error) {
+                console.error('Error fetching diary details:', error);
+            }
+        };
+
+        fetchDiaryDetail();
+    }, []);
+
+    useEffect(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
+
+        const convertAddressToCoords = async (companyAddress) => {
+            return new Promise((resolve, reject) => {
+                geocoder.addressSearch(
+                    companyAddress,
+                    function (result, status) {
+                        if (status === window.kakao.maps.services.Status.OK) {
+                            const coords = {
+                                lat: parseFloat(result[0].y),
+                                lng: parseFloat(result[0].x),
+                            };
+                            resolve(coords);
+                        } else {
+                            reject(
+                                new Error(
+                                    'Failed to convert address to coordinates',
+                                ),
+                            );
+                        }
+                    },
+                );
+            });
+        };
+
+        const fetchLocations = async () => {
+            const promises = data.map(async (item) => {
+                const coords = await convertAddressToCoords(
+                    item.companyAddress,
+                );
+                return { ...item, location: coords };
+            });
+
+            const updatedData = await Promise.all(promises);
+            setLocations(updatedData.map((item) => item.location));
+        };
+
+        if (data.length > 0) {
+            // 데이터가 있을 때만 위치를 가져옴
+            fetchLocations();
         }
-    });
+    }, [data]);
 
-    const locations = data.map((item) => item.location);
-    const placeNames = data.map((item) => item.placeName);
-    const diaryData = data.map(({ id, placeName, rate, review, images }) => ({
-        id,
-        placeName,
-        rate,
-        review,
-        images,
-    }));
+    const diaryData = data.map(
+        ({
+            diaryNo,
+            companyName,
+            rate,
+            review,
+            uploadOrg,
+            uploadReal,
+            category,
+        }) => ({
+            diaryNo,
+            companyName,
+            rate,
+            review,
+            uploadOrg,
+            uploadReal,
+            category,
+        }),
+    );
 
     return (
         <div>
@@ -70,8 +104,12 @@ function DiaryDetail() {
                 <RealHeader />
                 <Header title={'데이트 기록'} />
                 <div className="body">
-                    <KakaoMap locations={locations} placeNames={placeNames} />
-                    <DiaryList data={diaryData} />
+                    <KakaoMap
+                        locations={locations}
+                        placeNames={diaryData.map((item) => item.companyName)}
+                        categorys={diaryData.map((item) => item.category)}
+                    />
+                    <DiaryList data={diaryData} date={formattedDate} />
                 </div>
             </div>
             <div className="footer">

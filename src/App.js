@@ -11,6 +11,7 @@ import Paypassword from './component/pay/Paypassword';
 
 import PayInfo from './component/pay/PayInfo';
 import IndexMain from './component/mainIndex/IndexMain';
+import LoginMain from './component/mainIndex/LoginMain';
 import Payresult from './component/pay/Payresult';
 import AdminMember from './component/admin/AdminMember';
 import AdminStatistics from './component/admin/AdminStatistics';
@@ -38,6 +39,7 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<IndexMain />} />
+            <Route path="/main" element={<LoginMain />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
 
