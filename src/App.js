@@ -8,7 +8,8 @@ import ProfileComparison from './component/cardselection_second/ProfileCompariso
 import CardInfoInput from './component/cardselection_3/CardInfoInput';
 import LoginPage from './component/Login/LoginPage';
 import Paypassword from './component/pay/Paypassword';
-
+import PayLogin from './component/pay/PayLoginPage';
+import PaymentRecord from './component/payment_record/PaymentRecord';
 import PayInfo from './component/pay/PayInfo';
 import IndexMain from './component/mainIndex/IndexMain';
 import LoginMain from './component/mainIndex/LoginMain';
@@ -23,14 +24,12 @@ import EditProfile from './component/profile/EditProfile';
 import ViewProfile from './component/profile/ViewProfile';
 import DiaryDetail from './component/diary/pages/DiaryDetail';
 import DiaryHome from './component/diary/pages/DiaryHome';
-import PaymentRecord from './component/payment_record/PaymentRecord';
 
 function App() {
     return (
         <Routes>
             <Route path="/verify" element={<SignUpComponent />} />
             <Route path="/signup" element={<SignUpForm />} />
-
             <Route path="/search_lover" element={<CardCreationForm />} />
             <Route path="/card_selection" element={<ProfileComparison />} />
             <Route path="/card_info" element={<CardInfoInput />} />
@@ -42,6 +41,8 @@ function App() {
             <Route path="/" element={<IndexMain />} />
             <Route path="/main" element={<LoginMain />} />
             <Route path="/paymentRecord" element={<PaymentRecord />} />
+
+            <Route path="/pay/PayLoginPage" element={<PayLogin />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
 
@@ -62,6 +63,8 @@ function App() {
             <Route path="/view-profile/:userno" element={<ViewProfile />} />
             <Route path="/diary" element={<DiaryHome />} />
             <Route path="/diary/detail/:date" element={<DiaryDetail />} />
+
+            <Route path="/" element={<LoginPage />} />
         </Routes>
     );
 }
