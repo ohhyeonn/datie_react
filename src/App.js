@@ -39,6 +39,9 @@ function App() {
             <Route path="/login" element={<LoginPage />} />
             <Route path="/" element={<IndexMain />} />
             <Route path="/main" element={<LoginMain />} />
+            <Route path="/paymentRecord" element={<PaymentRecord />} />
+
+            <Route path="/pay/PayLoginPage" element={<PayLogin />} />
             <Route path="/pay/Paypassword" element={<Paypassword />} />
             <Route path="/pay/Payresult" element={<Payresult />} />
 
