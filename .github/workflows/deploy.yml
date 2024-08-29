@@ -34,6 +34,9 @@ jobs:
     - name: Build the React app
       run: npm run build
 
+    - name: Create .env file
+      run: echo "REACT_APP_API_URL=http://localhost:8090" > .env
+
     - name: Deploy to EC2
       uses: appleboy/scp-action@master
       with:
@@ -42,6 +45,16 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         port: 22
         source: "build/*"  # 배포할 파일 경로
+        target: "/var/www/html/"  # EC2에서의 배포 경로
+
+    - name: Upload .env file to EC2
+      uses: appleboy/scp-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        source: ".env"  # .env 파일 경로
         target: "/var/www/html/"  # EC2에서의 배포 경로
 
     - name: Restart Nginx
