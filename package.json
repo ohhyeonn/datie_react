@@ -34,7 +34,7 @@
     },
     "scripts": {
         "start": "react-scripts start",
-        "build": "react-scripts build --no-warn",
+        "build": "CI=false npm run actual-build",
         "test": "echo \"Error: no test specified\" && exit 1",
         "eject": "react-scripts eject"
     },
