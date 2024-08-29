@@ -16,7 +16,7 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v2
       with:
-        node-version: '10'  # React 앱에 맞는 Node.js 버전
+        node-version: '14'  # React 앱에 맞는 Node.js 버전
 
     - name: Install dependencies
       run: npm install
