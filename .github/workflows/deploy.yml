@@ -21,6 +21,16 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Remove old build files from EC2
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
+        script: |
+          sudo rm -rf /var/www/html/*  # 기존 파일 삭제
+  
     - name: Build the React app
       run: npm run build
 
